@@ -1,0 +1,46 @@
+﻿@model BookShop.Models.Author
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header bg-light">
+                مشخصات نویسنده
+            </div>
+            <div class="card-body">
+                <table class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.FirstName)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.LastName)
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(model => model.FirstName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(model => model.LastName)
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div>
+                    <a asp-action="Edit" asp-route-id="@Model.AuthorID">ویرایش</a> |
+                    <a asp-action="Index">بازگشت به لیست</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

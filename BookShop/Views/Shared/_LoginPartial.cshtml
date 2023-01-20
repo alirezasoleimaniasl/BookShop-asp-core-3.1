@@ -1,0 +1,38 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using BookShop.Areas.Identity.Data
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+<ul class="navbar-nav mt-2 mt-lg-0">
+@if (SignInManager.IsSignedIn(User))
+{
+    <li class="nav-item">
+        <a title="Manage" class="nav-link text-white">سلام @UserManager.GetUserName(User)!</a>
+    </li>
+    <li class="nav-item">
+        <form asp-action="SignOut" asp-controller="Account" method="post" id="logoutForm" class="navbar-right">
+            <button type="submit" class="btn btn-link navbar-btn navbar-link nav-link text-white">خروج</button>
+        </form>
+    </li>
+    <li>
+        @if (User.IsInRole("کاربر") || User.IsInRole("مشتری"))
+        {
+            <a asp-action="ChangePassword" asp-controller="Account" class="nav-link text-white">ورود به پنل کاربری</a>
+        }
+        else
+        {
+            <a href="/Admin/Dashboard/Index" class="nav-link text-white">ورود به پنل مدیریت</a>
+        }
+    </li>
+}
+else
+{
+    <li class="nav-item">
+        <a class="nav-link text-dark" asp-action="Register" asp-controller="Account">عضویت</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link text-dark" asp-action="SignIn" asp-controller="Account">ورود به سایت</a>
+    </li>
+}
+</ul>
