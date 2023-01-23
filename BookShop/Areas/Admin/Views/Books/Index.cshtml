@@ -1,6 +1,5 @@
 ﻿@model ReflectionIT.Mvc.Paging.PagingList<BookShop.Models.ViewModels.BooksIndexViewModel>
 @using ReflectionIT.Mvc.Paging
-@inject BookShop.Classes.ConvertDate convertDate
 @addTagHelper*,BookShop
 @addTagHelper *, ReflectionIT.Mvc.Paging
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
@@ -164,22 +163,10 @@
                                     <td>@item.PublisherName</td>
                                     <td class="text-center">@item.Price</td>
                                     <td class="text-center">
-                                        @if (item.PublishDate != null)
-                                            @convertDate.ConvertMiladiToShamsi((DateTime)item.PublishDate)
-                                            else
-                                            {
-                                                <span>-</span>
-                                            }
+                                        @item.PublishDate
                                     </td>
                                     <td class="text-center">
-                                        @if (item.IsPublish == true)
-                                        {
-                                            <label class="badge badge-success btn-block">منتشر شده</label>
-                                        }
-                                        else
-                                        {
-                                            <label class="badge badge-info btn-block">پیشنویس</label>
-                                        }
+                                        <label class="badge @(item.IsPublish == "منتشر شده"?"badge-success":"badge-danger") btn-block">@item.IsPublish</label>
                                     </td>
                                     <td class="text-center">
                                         <security-trimming asp-action="Details" asp-controller="Books" asp-area="Admin">

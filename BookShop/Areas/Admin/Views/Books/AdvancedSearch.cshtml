@@ -50,22 +50,10 @@
                                     <td>@item.PublisherName</td>
                                     <td class="text-center">@item.Price</td>
                                     <td class="text-center">
-                                        @if (item.PublishDate != null)
-                                            @convertDate.ConvertMiladiToShamsi((DateTime)item.PublishDate)
-                                            else
-                                            {
-                                                <span>-</span>
-                                            }
+                                        @item.PublishDate
                                     </td>
                                     <td class="text-center">
-                                        @if (item.IsPublish == true)
-                                        {
-                                            <label class="badge badge-success btn-block">منتشر شده</label>
-                                        }
-                                        else
-                                        {
-                                            <label class="badge badge-info btn-block">پیشنویس</label>
-                                        }
+                                        <label class="badge @(item.IsPublish == "منتشر شده"?"badge-success":"badge-danger") btn-block">@item.IsPublish</label>
                                     </td>
                                     <td class="text-center">
                                         <a class="btn btn-info btn-icon"><i class="fa fa-eye text-white"></i></a>

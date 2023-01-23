@@ -18,7 +18,6 @@ namespace BookShop.Models.ViewModels
 
         }
 
-
         public int BookID { get; set; }
 
         public DateTime? PublishDate { get; set; }
@@ -57,7 +56,6 @@ namespace BookShop.Models.ViewModels
         [Display(Name = " این کتاب روی سایت منتشر شود.")]
         public bool IsPublish { get; set; }
 
-
         [Display(Name = "سال انتشار")]
         public int PublishYear { get; set; }
 
@@ -78,9 +76,6 @@ namespace BookShop.Models.ViewModels
 
         public int[] CategoryID { get; set; }
     }
-
-
-
 
     public class BooksSubCategoriesViewModel
     {
@@ -126,10 +121,10 @@ namespace BookShop.Models.ViewModels
         public string PublisherName { get; set; }
 
         [Display(Name = "تاریخ انتشار در سایت")]
-        public DateTime? PublishDate { get; set; }
+        public string PublishDate { get; set; }
 
         [Display(Name = "وضعیت")]
-        public bool? IsPublish { get; set; }
+        public string IsPublish { get; set; }
 
         [Display(Name = "نویسندگان")]
         public string Author { get; set; }
@@ -139,7 +134,6 @@ namespace BookShop.Models.ViewModels
         public string Category { get; set; }
         public string Language { get; set; }
     }
-
 
     public class BooksAdvancedSearch
     {
@@ -172,7 +166,4 @@ namespace BookShop.Models.ViewModels
         public DateTime? PublishDate { get; set; }
         public byte[] Image { get; set; }
     }
-
-
-
 }

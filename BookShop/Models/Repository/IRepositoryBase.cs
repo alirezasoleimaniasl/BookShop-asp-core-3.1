@@ -20,5 +20,6 @@ namespace BookShop.Models.Repository
         void DeleteRange(IEnumerable<TEntity> entities);
         Task<List<TEntity>> GetPaginateResultAsync(int CurrentPage, int PageSize = 1);
         int GetCount();
+
     }
 }

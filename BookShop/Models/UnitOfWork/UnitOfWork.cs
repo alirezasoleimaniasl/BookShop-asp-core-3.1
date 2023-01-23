@@ -1,4 +1,5 @@
-﻿using BookShop.Models.Repository;
+﻿using BookShop.Classes;
+using BookShop.Models.Repository;
 using System.Threading.Tasks;
 
 namespace BookShop.Models.UnitOfWork
@@ -7,9 +8,11 @@ namespace BookShop.Models.UnitOfWork
     {
         public BookShopContext _Context { get; }
         private IBookRepository _IBookRepository;
-        public UnitOfWork(BookShopContext Context)
+        private readonly IConvertDate _convertDate;
+        public UnitOfWork(BookShopContext Context, IConvertDate convertDate)
         {
             _Context = Context;
+            _convertDate = convertDate;
         }
 
         public IRepositoryBase<TEntity> BaseRepository<TEntity>() where TEntity : class
@@ -24,7 +27,7 @@ namespace BookShop.Models.UnitOfWork
             {
                 if (_IBookRepository == null)
                 {
-                    _IBookRepository = new BookRepository(_Context);
+                    _IBookRepository = new BookRepository(this,_convertDate);
                 }
                 return _IBookRepository;
             }
