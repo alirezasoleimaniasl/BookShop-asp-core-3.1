@@ -1,6 +1,9 @@
 ﻿using BookShop.Areas.Identity.Data;
+using BookShop.Classes;
+using BookShop.Models.Repository;
 using BookShop.Models.ViewModels;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -14,9 +17,11 @@ namespace BookShop.Areas.Api.Controllers
     public class UsersApiController : ControllerBase
     {
         private readonly IApplicationUserManager _userManager;
-        public UsersApiController(IApplicationUserManager userManager)
+        private readonly IUsersRepository _usersRepository;
+        public UsersApiController(IApplicationUserManager userManager, IApplicationRoleManager roleManager, IConvertDate convertDate, IUsersRepository usersRepository)
         {
             _userManager = userManager;
+            _usersRepository = usersRepository;
         }
 
         [HttpGet]
@@ -36,9 +41,34 @@ namespace BookShop.Areas.Api.Controllers
                 return new JsonResult(User);
         }
 
-        [HttpPost]
-        public async Task<string> Register()
+        [HttpPost("[action]")]
+        public async Task<JsonResult> Register(RegisterBaseViewModel ViewModel)
         {
+            var result = await _usersRepository.RegisterAsync(ViewModel);
+            if (result.Succeeded)
+            {
+                return new JsonResult("عضویت با موفقیت انجام شد");
+            }
+            else
+            {
+                return new JsonResult(result.Errors);
+            }
+        }
+
+        [HttpPost("[action]")]
+        public async Task<string> SignIn(SignInBaseViewModel ViewModel)
+        {
+            var User = await _userManager.FindByNameAsync(ViewModel.UserName);
+            if (User == null)
+                return "کاربری با این ایمیل یافت نشد";
+            else
+            {
+                var result = await _userManager.CheckPasswordAsync(User,ViewModel.Password);
+                if (result)
+                    return "احراز هویت با موفقیت انجام شد";
+                else
+                    return "نام کاربری یا کلمه عبور شما صحیح نمی باشد";
+            }
 
         }
     }
