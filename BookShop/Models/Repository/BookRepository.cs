@@ -152,6 +152,11 @@ namespace BookShop.Models.Repository
         {
             try
             {
+                byte[] Image = null;
+                if (string.IsNullOrWhiteSpace(ViewModel.ImageBase64))
+                {
+                    Image = Convert.FromBase64String(ViewModel.ImageBase64);
+                }
                 List<Book_Translator> translators = new List<Book_Translator>();
                 List<Book_Category> categories = new List<Book_Category>();
                 if (ViewModel.TranslatorID != null)
@@ -176,6 +181,7 @@ namespace BookShop.Models.Repository
                     LanguageID = ViewModel.LanguageID,
                     Summary = ViewModel.Summary,
                     Title = ViewModel.Title,
+                    Image = Image,
                     PublishYear = ViewModel.PublishYear,
                     PublishDate = PublishDate,
                     Weight = ViewModel.Weight,

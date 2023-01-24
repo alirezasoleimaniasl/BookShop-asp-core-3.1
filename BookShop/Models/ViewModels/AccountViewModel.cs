@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using BookShop.Attributes;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -7,7 +9,21 @@ using System.Threading.Tasks;
 
 namespace BookShop.Models.ViewModels
 {
-    public class RegisterViewModel:GoogleReCaptchaModelBase
+    //Register with View(Website)
+    public class RegisterViewModel:RegisterBaseViewModel /*GoogleReCaptchaModelBase*/
+    {
+        [GoogleRecaptchaValidationAttributes]
+        [BindProperty(Name = "g-recaptcha-response")]
+        public string GoogleRecaptchaResponse { get; set; }
+
+        [DataType(DataType.Password)]
+        [Display(Name = "تکرار کلمه عبور")]
+        [Compare("Password", ErrorMessage = "کلمه عبور وارد شده با تکرار کلمه عبور مطابقت ندارد.")]
+        public string ConfirmPassword { get; set; }
+    }
+
+    //Register with API(Application)
+    public class RegisterBaseViewModel
     {
         [Required(ErrorMessage = "وارد نمودن {0} الزامی است.")]
         [EmailAddress(ErrorMessage = "ایمیل شما نامعتبر است.")]
@@ -19,11 +35,6 @@ namespace BookShop.Models.ViewModels
         [DataType(DataType.Password)]
         [Display(Name = "کلمه عبور")]
         public string Password { get; set; }
-
-        [DataType(DataType.Password)]
-        [Display(Name = "تکرار کلمه عبور")]
-        [Compare("Password", ErrorMessage = "کلمه عبور وارد شده با تکرار کلمه عبور مطابقت ندارد.")]
-        public string ConfirmPassword { get; set; }
 
         [Required(ErrorMessage = "وارد نمودن {0} الزامی است.")]
         [Display(Name = "تاریخ تولد")]
@@ -130,6 +141,7 @@ namespace BookShop.Models.ViewModels
 
         public UserSidebarViewModel UserSidebar { get; set; }
     }
+
     public class UserSidebarViewModel
     {
         public string FullName { get; set; }

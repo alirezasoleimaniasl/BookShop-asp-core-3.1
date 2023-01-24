@@ -42,8 +42,9 @@ namespace BookShop.Models.ViewModels
         [Required(ErrorMessage = "وارد نمودن {0} الزامی است.")]
         [Display(Name = "موجودی")]
         public int Stock { get; set; }
-        public string File { get; set; }
+        public string ImageBase64 { get; set; }
 
+        public byte[] Image { get; set; }
         [Display(Name = "تعداد صفحات")]
         public int NumOfPages { get; set; }
 
