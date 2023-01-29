@@ -1,4 +1,5 @@
-﻿using BookShop.Areas.Identity.Data;
+﻿using BookShop.Areas.Api.Classes;
+using BookShop.Areas.Identity.Data;
 using BookShop.Classes;
 using BookShop.Models.Repository;
 using BookShop.Models.ViewModels;
@@ -25,49 +26,49 @@ namespace BookShop.Areas.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<List<UsersViewModel>> Get()
+        public async Task<ApiResult<List<UsersViewModel>>> Get()
         {
-            return await _userManager.GetAllUsersWithRolesAsync();
+            return Ok(await _userManager.GetAllUsersWithRolesAsync());
         }
 
         //[HttpGet("{id}")]
         [HttpGet("[action]")]
-        public async Task<IActionResult> Get(string id)
+        public async Task<ApiResult<List<UsersViewModel>>> Get(string id)
         {
             var User = await _userManager.FindUserWithRolesByIdAsync(id);
             if (User == null)
                 return NotFound();
             else
-                return new JsonResult(User);
+                return Ok(User);
         }
 
         [HttpPost("[action]")]
-        public async Task<JsonResult> Register(RegisterBaseViewModel ViewModel)
+        public async Task<ApiResult<string>> Register(RegisterBaseViewModel ViewModel)
         {
             var result = await _usersRepository.RegisterAsync(ViewModel);
             if (result.Succeeded)
             {
-                return new JsonResult("عضویت با موفقیت انجام شد");
+                return Ok("عضویت با موفقیت انجام شد");
             }
             else
             {
-                return new JsonResult(result.Errors);
+                return BadRequest(result.Errors);
             }
         }
 
         [HttpPost("[action]")]
-        public async Task<string> SignIn(SignInBaseViewModel ViewModel)
+        public async Task<ApiResult<string>> SignIn(SignInBaseViewModel ViewModel)
         {
             var User = await _userManager.FindByNameAsync(ViewModel.UserName);
             if (User == null)
-                return "کاربری با این ایمیل یافت نشد";
+                return BadRequest("کاربری با این ایمیل یافت نشد");
             else
             {
                 var result = await _userManager.CheckPasswordAsync(User,ViewModel.Password);
                 if (result)
-                    return "احراز هویت با موفقیت انجام شد";
+                    return Ok("احراز هویت با موفقیت انجام شد");
                 else
-                    return "نام کاربری یا کلمه عبور شما صحیح نمی باشد";
+                    return BadRequest("نام کاربری یا کلمه عبور شما صحیح نمی باشد");
             }
 
         }

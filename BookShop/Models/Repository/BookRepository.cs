@@ -153,7 +153,7 @@ namespace BookShop.Models.Repository
             try
             {
                 byte[] Image = null;
-                if (string.IsNullOrWhiteSpace(ViewModel.ImageBase64))
+                if (!string.IsNullOrWhiteSpace(ViewModel.ImageBase64))
                 {
                     Image = Convert.FromBase64String(ViewModel.ImageBase64);
                 }

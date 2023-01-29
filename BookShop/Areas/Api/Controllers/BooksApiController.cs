@@ -1,4 +1,5 @@
-﻿using BookShop.Models;
+﻿using BookShop.Areas.Api.Classes;
+using BookShop.Models;
 using BookShop.Models.UnitOfWork;
 using BookShop.Models.ViewModels;
 using Microsoft.AspNetCore.Http;
@@ -20,34 +21,36 @@ namespace BookShop.Areas.Api.Controllers
             _UW = UW;
         }
         [HttpGet]
-        public List<BooksIndexViewModel> GetBooks()
+        public ApiResult<List<BooksIndexViewModel>> GetBooks()
         {
-            return _UW.BookRepository.GetAllBooks("","","","","","","");
+            return Ok(_UW.BookRepository.GetAllBooks("", "", "", "", "", "", ""));
         }
 
         [HttpPost]
-        public async Task<string> CreateBook(BooksCreateEditViewModel ViewModel)
+        public async Task<ApiResult> CreateBook(BooksCreateEditViewModel ViewModel)
         {
             if (await _UW.BookRepository.CreateBookAsync(ViewModel))
-                return "عملیات با موفقیت انجام شد";
+            {
+                return Ok();
+            }
             else
-                return "در انجام عملیات خطایی رخ داده است";
+                return BadRequest("در انجام عملیات خطایی رخ داد");
         }
-        
+
         [HttpPut]
-        public async Task<string> EditBook(BooksCreateEditViewModel ViewModel)
+        public async Task<ApiResult> EditBook(BooksCreateEditViewModel ViewModel)
         {
             if (await _UW.BookRepository.EditBookAsync(ViewModel))
-                return "ذخیره تغییرات با موفقیت انجام شد";
+                return Ok();
             else
-                return "در انجام عملیات خطایی رخ داده است";
+                return BadRequest("در انجام عملیات خطایی رخ داد");
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteBook(int id)
         {
             if (await _UW.BookRepository.DeleteBookAsync(id))
-                return Content("حذف کتاب با موفقیت انجام شد");
+                return Ok();
             else
                 return NotFound();
 
