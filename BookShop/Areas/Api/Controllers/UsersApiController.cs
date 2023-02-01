@@ -15,6 +15,7 @@ namespace BookShop.Areas.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [ApiResultFilter]
     public class UsersApiController : ControllerBase
     {
         private readonly IApplicationUserManager _userManager;

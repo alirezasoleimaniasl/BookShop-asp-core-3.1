@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
@@ -61,7 +62,17 @@ namespace BookShop
             
 
             services.AddRazorPages();
+            //services.Configure<ApiBehaviorOptions>(options =>
+            //{
+            //    options.InvalidModelStateResponseFactory = actionContext =>
+            //    {
+            //        var errors = actionContext.ModelState
+            //        .Where(e => e.Value.Errors.Count() != 0)
+            //        .Select(e => e.Value.Errors.First().ErrorMessage).ToList();
 
+            //        return new BadRequestObjectResult(errors);
+            //    };
+            //});
             services.ConfigureApplicationCookie(options =>
             {
                 options.LoginPath = "/Account/SignIn";
