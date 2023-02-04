@@ -1,5 +1,6 @@
 ﻿using BookShop.Areas.Admin.Data;
 using BookShop.Areas.Admin.Services;
+using BookShop.Areas.Api.Controllers;
 using BookShop.Areas.Identity.Data;
 using BookShop.Areas.Identity.Services;
 using BookShop.Classes;
@@ -14,6 +15,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
@@ -62,6 +64,7 @@ namespace BookShop
             
 
             services.AddRazorPages();
+            //Add Api Errors as list of messages to output
             //services.Configure<ApiBehaviorOptions>(options =>
             //{
             //    options.InvalidModelStateResponseFactory = actionContext =>
@@ -73,6 +76,16 @@ namespace BookShop
             //        return new BadRequestObjectResult(errors);
             //    };
             //});
+            services.AddApiVersioning(option =>
+            {
+                option.ReportApiVersions = true;//Adding Api version to Rquest Header
+                option.AssumeDefaultVersionWhenUnspecified = true;//Add when api has unknown versioning
+                option.DefaultApiVersion = new ApiVersion(1,0);//Add default version when you have not specified the version
+                //option.ApiVersionReader = new HeaderApiVersionReader("x-api-key");//Add api version by header-Query by url will be disbled
+                option.ApiVersionReader = ApiVersionReader.Combine(new QueryStringApiVersionReader(),new HeaderApiVersionReader("x-api-key"));
+
+                //option.Conventions.Controller<SampleV1Controller>().HasApiVersion(new ApiVersion(1, 0));//Define version of Api for specific controller
+            });
             services.ConfigureApplicationCookie(options =>
             {
                 options.LoginPath = "/Account/SignIn";

@@ -7,7 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BookShop.Areas.Api.Controllers
+namespace BookShop.Areas.Api.Controllers.v1
 {
     [Route("api/[controller]")]
     [ApiController]

@@ -11,30 +11,31 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BookShop.Areas.Api.Controllers
+namespace BookShop.Areas.Api.Controllers.v1
 {
     [Route("api/[controller]")]
     [ApiController]
     [ApiResultFilter]
+    [ApiVersion("1.0")]
     public class UsersApiController : ControllerBase
     {
         private readonly IApplicationUserManager _userManager;
         private readonly IUsersRepository _usersRepository;
-        public UsersApiController(IApplicationUserManager userManager, IApplicationRoleManager roleManager, IConvertDate convertDate, IUsersRepository usersRepository)
+        public UsersApiController(IApplicationUserManager userManager, /*IApplicationRoleManager roleManager, IConvertDate convertDate,*/ IUsersRepository usersRepository)
         {
             _userManager = userManager;
             _usersRepository = usersRepository;
         }
 
         [HttpGet]
-        public async Task<ApiResult<List<UsersViewModel>>> Get()
+        public virtual async Task<ApiResult<List<UsersViewModel>>> Get()
         {
             return Ok(await _userManager.GetAllUsersWithRolesAsync());
         }
 
         //[HttpGet("{id}")]
         [HttpGet("[action]")]
-        public async Task<ApiResult<List<UsersViewModel>>> Get(string id)
+        public virtual async Task<ApiResult<List<UsersViewModel>>> Get(string id)
         {
             var User = await _userManager.FindUserWithRolesByIdAsync(id);
             if (User == null)
@@ -44,7 +45,7 @@ namespace BookShop.Areas.Api.Controllers
         }
 
         [HttpPost("[action]")]
-        public async Task<ApiResult<string>> Register(RegisterBaseViewModel ViewModel)
+        public virtual async Task<ApiResult<string>> Register(RegisterBaseViewModel ViewModel)
         {
             var result = await _usersRepository.RegisterAsync(ViewModel);
             if (result.Succeeded)
@@ -58,7 +59,7 @@ namespace BookShop.Areas.Api.Controllers
         }
 
         [HttpPost("[action]")]
-        public async Task<ApiResult<string>> SignIn(SignInBaseViewModel ViewModel)
+        public virtual async Task<ApiResult<string>> SignIn(SignInBaseViewModel ViewModel)
         {
             var User = await _userManager.FindByNameAsync(ViewModel.UserName);
             if (User == null)
