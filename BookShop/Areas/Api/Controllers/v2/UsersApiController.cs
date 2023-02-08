@@ -1,4 +1,5 @@
 ﻿using BookShop.Areas.Api.Classes;
+using BookShop.Areas.Api.Services;
 using BookShop.Areas.Identity.Data;
 using BookShop.Models.Repository;
 using BookShop.Models.ViewModels;
@@ -16,14 +17,14 @@ namespace BookShop.Areas.Api.Controllers.v2
     [ApiVersion("2.0")]
     public class UsersApiController : v1.UsersApiController
     {
-        public UsersApiController(IApplicationUserManager userManager, IUsersRepository usersRepository)
-            : base(userManager, usersRepository)
+        public UsersApiController(IApplicationUserManager userManager, IUsersRepository usersRepository, IjwtService jwtService)
+            : base(userManager, usersRepository,jwtService)
         {
         }
 
-        public override async Task<ApiResult<string>> Register(RegisterBaseViewModel ViewModel)
+        public override Task<ApiResult> Register(RegisterBaseViewModel ViewModel)
         {
-            return Ok();
+            return base.Register(ViewModel);
         }
     }
 }

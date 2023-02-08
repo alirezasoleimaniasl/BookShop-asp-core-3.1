@@ -33,37 +33,33 @@ namespace BookShop
 {
     public class Startup
     {
+        public IConfiguration Configuration { get; }
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
-
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCustomPolicies();
-            services.AddCustomApplicationServices();
             services.AddCustomIdentityServices();
             services.AddCustomApplicationServices();
-
-            services.Configure<CookiePolicyOptions>(options =>
-            {
-                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
-                options.CheckConsentNeeded = context => true;
-                options.MinimumSameSitePolicy = SameSiteMode.None;
-            });
-
             services.AddSession(options =>
             {
                 options.IdleTimeout = TimeSpan.FromMinutes(20);
                 options.Cookie.HttpOnly = true;
             });
-
+            services.Configure<CookiePolicyOptions>(options =>
+            {
+                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
+                options.CheckConsentNeeded = context => false;
+                options.MinimumSameSitePolicy = SameSiteMode.None;
+            });
             
 
             services.AddRazorPages();
+
             //Add Api Errors as list of messages to output
             //services.Configure<ApiBehaviorOptions>(options =>
             //{
@@ -76,13 +72,15 @@ namespace BookShop
             //        return new BadRequestObjectResult(errors);
             //    };
             //});
+
             services.AddApiVersioning(option =>
             {
                 option.ReportApiVersions = true;//Adding Api version to Rquest Header
                 option.AssumeDefaultVersionWhenUnspecified = true;//Add when api has unknown versioning
                 option.DefaultApiVersion = new ApiVersion(1,0);//Add default version when you have not specified the version
                 //option.ApiVersionReader = new HeaderApiVersionReader("x-api-key");//Add api version by header-Query by url will be disbled
-                option.ApiVersionReader = ApiVersionReader.Combine(new QueryStringApiVersionReader(),new HeaderApiVersionReader("x-api-key"));
+                option.ApiVersionReader = ApiVersionReader.Combine(new QueryStringApiVersionReader(),
+                    new HeaderApiVersionReader("api-key"));
 
                 //option.Conventions.Controller<SampleV1Controller>().HasApiVersion(new ApiVersion(1, 0));//Define version of Api for specific controller
             });
@@ -106,11 +104,11 @@ namespace BookShop
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                //app.UseStaticFiles(new StaticFileOptions
-                //{
-                //    FileProvider = new PhysicalFileProvider(Path.Combine(env.ContentRootPath, "node_modules")),
-                //    RequestPath = "/" + "node_modules",
-                //});
+                app.UseStaticFiles(new StaticFileOptions
+                {
+                    FileProvider = new PhysicalFileProvider(Path.Combine(env.ContentRootPath, "node_modules")),
+                    RequestPath = "/" + "node_modules",
+                });
             }
             else
             {
@@ -119,8 +117,9 @@ namespace BookShop
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseCookiePolicy();
             app.UseRouting();
-            //app.UseAuthentication();
+            app.UseAuthentication();
             app.UseCustomIdentityServices();
             app.UseAuthorization();
             app.UseSession();

@@ -1,4 +1,5 @@
 ﻿using BookShop.Areas.Api.Classes;
+using BookShop.Areas.Api.Services;
 using BookShop.Areas.Identity.Data;
 using BookShop.Classes;
 using BookShop.Models.Repository;
@@ -21,10 +22,12 @@ namespace BookShop.Areas.Api.Controllers.v1
     {
         private readonly IApplicationUserManager _userManager;
         private readonly IUsersRepository _usersRepository;
-        public UsersApiController(IApplicationUserManager userManager, /*IApplicationRoleManager roleManager, IConvertDate convertDate,*/ IUsersRepository usersRepository)
+        private readonly IjwtService _jwtService;
+        public UsersApiController(IApplicationUserManager userManager, /*IApplicationRoleManager roleManager, IConvertDate convertDate,*/ IUsersRepository usersRepository, IjwtService jwtService)
         {
             _userManager = userManager;
             _usersRepository = usersRepository;
+            _jwtService = jwtService;
         }
 
         [HttpGet]
@@ -33,8 +36,8 @@ namespace BookShop.Areas.Api.Controllers.v1
             return Ok(await _userManager.GetAllUsersWithRolesAsync());
         }
 
-        //[HttpGet("{id}")]
-        [HttpGet("[action]")]
+        [HttpGet("{id}")]
+        //[HttpGet("[action]")]
         public virtual async Task<ApiResult<List<UsersViewModel>>> Get(string id)
         {
             var User = await _userManager.FindUserWithRolesByIdAsync(id);
@@ -45,12 +48,12 @@ namespace BookShop.Areas.Api.Controllers.v1
         }
 
         [HttpPost("[action]")]
-        public virtual async Task<ApiResult<string>> Register(RegisterBaseViewModel ViewModel)
+        public virtual async Task<ApiResult> Register(RegisterBaseViewModel ViewModel)
         {
             var result = await _usersRepository.RegisterAsync(ViewModel);
             if (result.Succeeded)
             {
-                return Ok("عضویت با موفقیت انجام شد");
+                return BadRequest("عضویت با موفقیت انجام شد");
             }
             else
             {
@@ -59,18 +62,19 @@ namespace BookShop.Areas.Api.Controllers.v1
         }
 
         [HttpPost("[action]")]
+        //[HttpPost]
         public virtual async Task<ApiResult<string>> SignIn(SignInBaseViewModel ViewModel)
         {
             var User = await _userManager.FindByNameAsync(ViewModel.UserName);
             if (User == null)
-                return BadRequest("کاربری با این ایمیل یافت نشد");
+                return BadRequest("نام کاربری یا کلمه عبور شما صحیح نمی باشد.");
             else
             {
-                var result = await _userManager.CheckPasswordAsync(User,ViewModel.Password);
+                var result = await _userManager.CheckPasswordAsync(User, ViewModel.Password);
                 if (result)
-                    return Ok("احراز هویت با موفقیت انجام شد");
+                    return Ok(await _jwtService.GenerateTokenAsync(User));
                 else
-                    return BadRequest("نام کاربری یا کلمه عبور شما صحیح نمی باشد");
+                    return BadRequest("نام کاربری یا کلمه عبور شما صحیح نمی باشد.");
             }
 
         }

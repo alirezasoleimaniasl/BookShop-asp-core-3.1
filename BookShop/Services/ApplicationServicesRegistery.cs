@@ -1,8 +1,10 @@
-﻿using BookShop.Areas.Identity.Services;
+﻿using BookShop.Areas.Api.Services;
+using BookShop.Areas.Identity.Services;
 using BookShop.Classes;
 using BookShop.Models;
 using BookShop.Models.Repository;
 using BookShop.Models.UnitOfWork;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
 using System;
@@ -22,14 +24,12 @@ namespace BookShop.Services
             services.AddTransient<IUsersRepository, UsersRepository>();
             services.AddTransient<BookRepository>();
             services.AddTransient<BookShopContext>();
-
-
-            services.AddHttpContextAccessor();
+            services.AddTransient<IjwtService, jwtService>();
             services.AddHttpClient();
             //End
             //services.AddControllersWithViews();
 
-            services.AddDbContext<BookShopContext>(ServiceLifetime.Transient);
+            //services.AddDbContext<BookShopContext>(ServiceLifetime.Transient);
             services.AddLocalization(options => { options.ResourcesPath = "Resources"; });
             services.AddMvc(options =>
             {
