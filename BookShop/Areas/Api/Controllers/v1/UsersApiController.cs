@@ -1,15 +1,18 @@
-﻿using BookShop.Areas.Api.Classes;
+﻿using BookShop.Areas.Admin.Data;
+using BookShop.Areas.Api.Classes;
 using BookShop.Areas.Api.Services;
 using BookShop.Areas.Identity.Data;
 using BookShop.Classes;
 using BookShop.Models.Repository;
 using BookShop.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace BookShop.Areas.Api.Controllers.v1
@@ -31,8 +34,13 @@ namespace BookShop.Areas.Api.Controllers.v1
         }
 
         [HttpGet]
+        //[Authorize]//Needs Token
+        //[Authorize(Roles = "مدیر سایت")]//Needs Token and Roles="مدیر سایت"
+        [Authorize(Policy = ConstantPolicies.DynamicPermission)]//Needs Constant Policies in AppRoleClaim
         public virtual async Task<ApiResult<List<UsersViewModel>>> Get()
         {
+            //string UserName = HttpContext.User.Identity.Name;
+            //string PhoneNumber = HttpContext.User.FindFirstValue(ClaimTypes.MobilePhone);
             return Ok(await _userManager.GetAllUsersWithRolesAsync());
         }
 
