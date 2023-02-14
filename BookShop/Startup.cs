@@ -1,4 +1,5 @@
 ﻿using BookShop.Areas.Admin.Data;
+using BookShop.Areas.Admin.Middlewares;
 using BookShop.Areas.Admin.Services;
 using BookShop.Areas.Api.Controllers;
 using BookShop.Areas.Identity.Data;
@@ -101,20 +102,31 @@ namespace BookShop
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
+            app.UseCustomeExceptionHandler();
+            //If using api use AddCu
+            //app.UseWhen(context => context.Request.Path.StartsWithSegments("/api"), appBuilder =>
+            //{
+            //    appBuilder.UseCustomeExceptionHandler();
+            //});
+
+            //app.UseWhen(context => !context.Request.Path.StartsWithSegments("/api"), appBuilder =>
+            //{
+            //    if (env.IsDevelopment())
+            //    {
+            //        appBuilder.UseDeveloperExceptionPage();
+            //    }
+            //    else
+            //    {
+            //        appBuilder.UseExceptionHandler("/Home/Error");
+            //        app.UseHsts();
+            //    }
+            //});
+            //Using node_modules files by asp.net core
+            app.UseStaticFiles(new StaticFileOptions
             {
-                app.UseDeveloperExceptionPage();
-                app.UseStaticFiles(new StaticFileOptions
-                {
-                    FileProvider = new PhysicalFileProvider(Path.Combine(env.ContentRootPath, "node_modules")),
-                    RequestPath = "/" + "node_modules",
-                });
-            }
-            else
-            {
-                app.UseExceptionHandler("/Home/Error");
-                app.UseHsts();
-            }
+                FileProvider = new PhysicalFileProvider(Path.Combine(env.ContentRootPath, "node_modules")),
+                RequestPath = "/" + "node_modules",
+            });
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
