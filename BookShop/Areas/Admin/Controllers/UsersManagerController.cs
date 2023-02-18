@@ -125,6 +125,9 @@ namespace BookShop.Areas.Admin.Controllers
                             User.BirthDate = _convertDate.ConvertShamsiToMiladi(ViewModel.PersianBirthDate);
 
                             Result = await _userManager.UpdateAsync(User);
+
+                            await _userManager.UpdateSecurityStampAsync(User);
+
                             if (Result.Succeeded)
                             {
                                 ViewBag.AlertSuccess = "ذخیره تغییرات با موفقیت انجام شد";

@@ -1,10 +1,12 @@
 ﻿using BookShop.Areas.Admin.Data;
+using BookShop.Areas.Api.Attributes;
 using BookShop.Areas.Api.Classes;
 using BookShop.Areas.Api.Services;
 using BookShop.Areas.Identity.Data;
 using BookShop.Classes;
 using BookShop.Models.Repository;
 using BookShop.Models.ViewModels;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -36,7 +38,10 @@ namespace BookShop.Areas.Api.Controllers.v1
         [HttpGet]
         //[Authorize]//Needs Token
         //[Authorize(Roles = "مدیر سایت")]//Needs Token and Roles="مدیر سایت"
-        [Authorize(Policy = ConstantPolicies.DynamicPermission)]//Needs Constant Policies in AppRoleClaim
+        //Needs Constant Policies in AppRoleClaim
+        [JwtAuthentication(Policy = ConstantPolicies.DynamicPermission)]
+        //AuthenticationSchemes show you are using this controller for JWT api
+        //[Authorize(Policy = ConstantPolicies.DynamicPermission,AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public virtual async Task<ApiResult<List<UsersViewModel>>> Get()
         {
             //string UserName = HttpContext.User.Identity.Name;

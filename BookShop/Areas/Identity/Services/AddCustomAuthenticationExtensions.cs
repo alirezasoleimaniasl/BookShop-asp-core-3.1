@@ -10,6 +10,9 @@ using BookShop.Classes;
 using BookShop.Exceptions;
 using BookShop.Areas.Api.Classes;
 using System.Net;
+using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
+using BookShop.Areas.Identity.Data;
 
 namespace BookShop.Areas.Identity.Services
 {
@@ -19,9 +22,10 @@ namespace BookShop.Areas.Identity.Services
         {
             services.AddAuthentication(options =>
             {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                //These thre lines enable sign in by JWT- To sign in webpage comment them
+                //options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                //options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                //options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
             })
                 .AddJwtBearer(options =>
                 {
@@ -61,6 +65,35 @@ namespace BookShop.Areas.Identity.Services
                                     throw new AppException(ApiResultStatusCode.UnAuthorized, "Authentication failed!", HttpStatusCode.Unauthorized, contex.Exception, null);
                                 return Task.CompletedTask;
                             },
+                            //TokenValidation on server side
+                            OnTokenValidated = async context =>
+                            {
+                                var userRepository = context.HttpContext.RequestServices.GetRequiredService<IApplicationUserManager>();
+
+                                var claimsIdentity = context.Principal.Identity as ClaimsIdentity;
+                                if (claimsIdentity.Claims?.Any() != true)
+                                    context.Fail("This token has no claims.");
+
+                                var securityStamp = claimsIdentity.FindFirstValue(new ClaimsIdentityOptions().SecurityStampClaimType);
+                                if (!securityStamp.HasValue())
+                                    context.Fail("This token has no secuirty stamp");
+
+                                var userId = claimsIdentity.GetUserId<string>();
+                                var user = await userRepository.GetUserAsync(context.Principal);
+
+                                if (user.SecurityStamp != securityStamp)
+                                    context.Fail("Token secuirty stamp is not valid.");
+
+                                if (!user.IsActive)
+                                    context.Fail("User is not active.");
+                            },
+
+                            OnChallenge = context =>
+                            {
+                                if (context.AuthenticateFailure != null)
+                                    throw new AppException(ApiResultStatusCode.UnAuthorized, "Authenticate failure.", HttpStatusCode.Unauthorized, context.AuthenticateFailure, null);
+                                throw new AppException(ApiResultStatusCode.UnAuthorized, "You are unauthorized to access this resource.", HttpStatusCode.Unauthorized);
+                            }
                         };
                     }
                 });
