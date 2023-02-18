@@ -6,12 +6,16 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
+using BookShop.Classes;
+using BookShop.Exceptions;
+using BookShop.Areas.Api.Classes;
+using System.Net;
 
 namespace BookShop.Areas.Identity.Services
 {
     public static class AddCustomAuthenticationExtensions
     {
-        public static IServiceCollection AddCustomAuthentication(this IServiceCollection services)
+        public static IServiceCollection AddCustomAuthentication(this IServiceCollection services,SiteSettings siteSettings)
         {
             services.AddAuthentication(options =>
             {
@@ -21,32 +25,44 @@ namespace BookShop.Areas.Identity.Services
             })
                 .AddJwtBearer(options =>
                 {
-                    //secretKey and enryptionkey 
-                    var secretkey = Encoding.UTF8.GetBytes("1234567890asdfgh");
-                    var encryptionkey = Encoding.UTF8.GetBytes("1234567890asdfgh");
-
-                    var validationParameters = new TokenValidationParameters
+                    if(siteSettings.JwtSettings != null)
                     {
-                        RequireSignedTokens = true,
+                        //secretKey and enryptionkey 
+                        var secretkey = Encoding.UTF8.GetBytes(siteSettings.JwtSettings.SecretKey);
+                        var encryptionkey = Encoding.UTF8.GetBytes(siteSettings.JwtSettings.EncryptKey);
 
-                        ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(secretkey),
+                        var validationParameters = new TokenValidationParameters
+                        {
+                            RequireSignedTokens = true,
 
-                        RequireExpirationTime = true,
-                        ValidateLifetime = true,
+                            ValidateIssuerSigningKey = true,
+                            IssuerSigningKey = new SymmetricSecurityKey(secretkey),
 
-                        ValidateAudience = true, //default : false
-                        ValidAudience = "Mizfa.com",
+                            RequireExpirationTime = true,
+                            ValidateLifetime = true,
 
-                        ValidateIssuer = true, //default : false
-                        ValidIssuer = "Mizfa.com",
+                            ValidateAudience = true, //default : false
+                            ValidAudience = siteSettings.JwtSettings.Audience,
 
-                        TokenDecryptionKey = new SymmetricSecurityKey(encryptionkey)
-                    };
+                            ValidateIssuer = true, //default : false
+                            ValidIssuer = siteSettings.JwtSettings.Issuer,
 
-                    options.RequireHttpsMetadata = false;
-                    options.SaveToken = true;
-                    options.TokenValidationParameters = validationParameters;
+                            TokenDecryptionKey = new SymmetricSecurityKey(encryptionkey)
+                        };
+
+                        options.RequireHttpsMetadata = false;
+                        options.SaveToken = true;
+                        options.TokenValidationParameters = validationParameters;
+                        options.Events = new JwtBearerEvents
+                        {
+                            OnAuthenticationFailed = contex =>
+                            {
+                                if(contex.Exception != null)
+                                    throw new AppException(ApiResultStatusCode.UnAuthorized, "Authentication failed!", HttpStatusCode.Unauthorized, contex.Exception, null);
+                                return Task.CompletedTask;
+                            },
+                        };
+                    }
                 });
             //Google and Yahoo Authentications Comes Here
             //.AddGoogle()

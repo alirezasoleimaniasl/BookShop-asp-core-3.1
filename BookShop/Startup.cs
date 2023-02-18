@@ -1,50 +1,38 @@
-﻿using BookShop.Areas.Admin.Data;
-using BookShop.Areas.Admin.Middlewares;
-using BookShop.Areas.Admin.Services;
-using BookShop.Areas.Api.Controllers;
-using BookShop.Areas.Identity.Data;
+﻿using BookShop.Areas.Admin.Middlewares;
 using BookShop.Areas.Identity.Services;
 using BookShop.Classes;
-using BookShop.Models;
-using BookShop.Models.Repository;
-using BookShop.Models.UnitOfWork;
 using BookShop.Services;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Localization;
 using ReflectionIT.Mvc.Paging;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
 
 namespace BookShop
 {
     public class Startup
     {
         public IConfiguration Configuration { get; }
+        private readonly SiteSettings _siteSettings;
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            //Get the information from appsetting-similar name
+            _siteSettings = configuration.GetSection(nameof(SiteSettings)).Get<SiteSettings>();
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<SiteSettings>(Configuration.GetSection(nameof(SiteSettings)));
             services.AddCustomPolicies();
-            services.AddCustomIdentityServices();
+            services.AddCustomIdentityServices(_siteSettings);
             services.AddCustomApplicationServices();
             services.AddSession(options =>
             {

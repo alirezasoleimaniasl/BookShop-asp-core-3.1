@@ -1,5 +1,7 @@
 ﻿using BookShop.Areas.Admin.Data;
 using BookShop.Areas.Identity.Data;
+using BookShop.Classes;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
@@ -15,29 +17,31 @@ namespace BookShop.Areas.Api.Services
     {
         public readonly IApplicationUserManager _userManager;
         public readonly IApplicationRoleManager _roleManager;
-        public jwtService(IApplicationUserManager userManager, IApplicationRoleManager roleManager)
+        public SiteSettings _siteSettings;
+        public jwtService(IApplicationUserManager userManager, IApplicationRoleManager roleManager,IOptionsSnapshot<SiteSettings> siteSetting)
         {
             _userManager = userManager;
             _roleManager = roleManager;
+            _siteSettings = siteSetting.Value;
         }
 
         public async Task<string> GenerateTokenAsync(ApplicationUser User)
         {
-            var secretKey = Encoding.UTF8.GetBytes("1234567890asdfgh");
+            var secretKey = Encoding.UTF8.GetBytes(_siteSettings.JwtSettings.SecretKey);
             var signingCredentials = new SigningCredentials(new SymmetricSecurityKey(secretKey), SecurityAlgorithms.HmacSha256Signature);
 
-            var encryptionKey = Encoding.UTF8.GetBytes("1234567890asdfgh");//Feed wih 16 character or more
+            var encryptionKey = Encoding.UTF8.GetBytes(_siteSettings.JwtSettings.EncryptKey);//Feed wih 16 character or more
             
             //Encrypting the payload(Whole content)
             var encryptingCredentials = new EncryptingCredentials(new SymmetricSecurityKey(encryptionKey),SecurityAlgorithms.Aes128KW,SecurityAlgorithms.Aes128CbcHmacSha256);
 
             var tokenDescriptor = new SecurityTokenDescriptor()
             {
-                Issuer = "Mizfa.com",
-                Audience = "Mizfa.com",
+                Issuer = _siteSettings.JwtSettings.Issuer,
+                Audience = _siteSettings.JwtSettings.Audience,
                 IssuedAt = DateTime.Now,
-                NotBefore = DateTime.Now,
-                Expires = DateTime.Now.AddMinutes(20),
+                NotBefore = DateTime.Now.AddMinutes(_siteSettings.JwtSettings.NotBeforeMinutes),
+                Expires = DateTime.Now.AddMinutes(_siteSettings.JwtSettings.ExpirationMinutes),
                 SigningCredentials = signingCredentials,
                 Subject = new ClaimsIdentity(await GetClaimsAsync(User)),
                 EncryptingCredentials = encryptingCredentials,
