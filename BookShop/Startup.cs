@@ -1,4 +1,5 @@
 ﻿using BookShop.Areas.Admin.Middlewares;
+using BookShop.Areas.Api.Swagger;
 using BookShop.Areas.Identity.Services;
 using BookShop.Classes;
 using BookShop.Services;
@@ -13,6 +14,7 @@ using Microsoft.Extensions.FileProviders;
 using ReflectionIT.Mvc.Paging;
 using System;
 using System.IO;
+using System.Text.Json.Serialization;
 
 namespace BookShop
 {
@@ -48,7 +50,9 @@ namespace BookShop
             
 
             services.AddRazorPages();
-
+            //Show enums numbers as string(show string instead of return code)
+            services.AddControllers().AddJsonOptions(options =>
+                options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
             //Add Api Errors as list of messages to output
             //services.Configure<ApiBehaviorOptions>(options =>
             //{
@@ -78,7 +82,8 @@ namespace BookShop
                 options.LoginPath = "/Account/SignIn";
                 options.AccessDeniedPath = "/Account/AccessDenied";
             });
-
+            services.AddSwagger();
+            //services.AddSwaggerGenNewtonsoftSupport();
             services.AddPaging(options =>
             {
                 options.ViewName = "Bootstrap4";
@@ -123,6 +128,8 @@ namespace BookShop
             app.UseCustomIdentityServices();
             app.UseAuthorization();
             app.UseSession();
+            app.UseSwaggerAndUI();
+
 
             //app.UseEndpoints(endpoints =>
             //{

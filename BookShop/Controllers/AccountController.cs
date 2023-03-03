@@ -18,6 +18,8 @@ using System.Threading.Tasks;
 
 namespace BookShop.Controllers
 {
+    //Ignore this controller to avoid interference with swagger
+    [ApiExplorerSettings(IgnoreApi = true)]
     public class AccountController : Controller
     {
         private readonly IApplicationRoleManager _roleManager;

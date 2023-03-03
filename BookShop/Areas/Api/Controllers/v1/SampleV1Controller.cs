@@ -7,13 +7,14 @@ using System.Threading.Tasks;
 
 namespace BookShop.Areas.Api.Controllers.v1
 {
-    [Route("api/[controller]")]
+    // [Route("api/[controller]")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     //[Route("api/v{v:apiVersion}/[controller]")]//http://localhost:43636/api/v3/SampleV1   start 'v' word frist of version
     //[Route("api/{v:apiVersion}/[controller]")]
     [ApiController]
     //[ApiVersion("1.0")]//http://localhost:43636/api/SampleV1?api-version=1.0
-    [ApiVersion("1.0", Deprecated = true)]//http://localhost:43636/api/SampleV1?api-version=1.0     deprected =true
-    [ApiVersion("3.0")]
+    [ApiVersion("1", Deprecated = true)]//http://localhost:43636/api/SampleV1?api-version=1.0     deprected =true
+    [ApiVersion("3")]
     public class SampleV1Controller : ControllerBase
     {
         [HttpGet]

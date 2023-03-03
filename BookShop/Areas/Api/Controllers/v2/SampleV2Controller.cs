@@ -7,9 +7,10 @@ using System.Threading.Tasks;
 
 namespace BookShop.Areas.Api.Controllers.v2
 {
-    [Route("api/[controller]")]// Add api verion in query or header
+    //[Route("api/[controller]")]// Add api verion in query or header
+    [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
-    [ApiVersion("2.0")]//http://localhost:43636/api/SampleV1?api-version=1.0
+    [ApiVersion("2")]//http://localhost:43636/api/SampleV1?api-version=1.0
     public class SampleV2Controller : ControllerBase
     {
         [HttpGet]

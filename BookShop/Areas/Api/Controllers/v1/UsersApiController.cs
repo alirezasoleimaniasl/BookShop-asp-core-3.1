@@ -19,10 +19,11 @@ using System.Threading.Tasks;
 
 namespace BookShop.Areas.Api.Controllers.v1
 {
-    [Route("api/[controller]")]
+    //[Route("api/[controller]")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
     [ApiResultFilter]
-    [ApiVersion("1.0")]
+    [ApiVersion("1")]
     public class UsersApiController : ControllerBase
     {
         private readonly IApplicationUserManager _userManager;

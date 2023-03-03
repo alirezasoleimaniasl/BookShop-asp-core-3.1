@@ -9,8 +9,10 @@ using System.Threading.Tasks;
 
 namespace BookShop.Areas.Api.Controllers.v1
 {
-    [Route("api/[controller]")]
+    //[Route("api/[controller]")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
+    [ApiVersion("1")]
     public class UploadFileController : ControllerBase
     {
         private readonly IHostingEnvironment _env;
