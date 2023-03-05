@@ -59,6 +59,8 @@ namespace BookShop.Areas.Api.Swagger
                     });
                 c.UseInlineDefinitionsForEnums();
                 c.DescribeAllParametersInCamelCase();
+                c.OperationFilter<RemoveVersionParameters>();
+                c.DocumentFilter<SetVersionInPaths>();
 
                 c.DocInclusionPredicate((docName, apiDesc) =>
                 {
@@ -70,6 +72,33 @@ namespace BookShop.Areas.Api.Swagger
 
                     return versions.Any(v => $"v{v.ToString()}" == docName);
                 });
+                c.OperationFilter<UnauthorizedResponsesOperationFilter>(true,"Bearer");
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header
+                });
+
+                //Apply Authorize for all actions
+                //c.AddSecurityRequirement(new OpenApiSecurityRequirement()
+                //{
+                //    {
+                //        new OpenApiSecurityScheme
+                //        {
+                //            Reference = new OpenApiReference
+                //            {
+                //                Type = ReferenceType.SecurityScheme,
+                //                Id = "Bearer"
+                //            },
+                //            //Scheme = "oauth2",
+                //            Name = "Bearer",
+                //            In = ParameterLocation.Header
+                //        },
+                //     new List<string>()
+                //    }
+                //});
+
                 //var xmlFiles = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 //var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFiles);
                 //c.IncludeXmlComments(xmlPath);

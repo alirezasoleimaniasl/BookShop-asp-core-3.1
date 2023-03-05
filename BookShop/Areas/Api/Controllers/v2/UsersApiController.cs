@@ -26,5 +26,20 @@ namespace BookShop.Areas.Api.Controllers.v2
         {
             return base.Register(ViewModel);
         }
+
+        public override Task<ApiResult<List<UsersViewModel>>> Get()
+        {
+            return base.Get();
+        }
+
+        public override Task<ApiResult<List<UsersViewModel>>> Get(string id)
+        {
+            return base.Get(id);
+        }
+
+        public override Task<ApiResult<string>> SignIn(SignInBaseViewModel ViewModel)
+        {
+            return base.SignIn(ViewModel);
+        }
     }
 }

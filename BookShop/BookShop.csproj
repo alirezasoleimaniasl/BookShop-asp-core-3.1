@@ -29,6 +29,7 @@
     <Compile Include="Areas\Api\Controllers\v1\UploadFileController.cs" />
     <Compile Include="Areas\Api\Controllers\v1\UsersApiController.cs" />
     <Compile Include="Areas\Api\Controllers\v2\SampleV2Controller.cs" />
+    <Compile Include="Areas\Api\Controllers\v2\UsersApiController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ProductsController.cs" />
