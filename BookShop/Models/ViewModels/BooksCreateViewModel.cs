@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -76,6 +77,10 @@ namespace BookShop.Models.ViewModels
         public int[] TranslatorID { get; set; }
 
         public int[] CategoryID { get; set; }
+
+        [Required(ErrorMessage = "بارگزاری فایل کتاب الزامی است")]
+        public IFormFile File { get; set; }
+        public string FileName { get; set; }
     }
 
     public class BooksSubCategoriesViewModel

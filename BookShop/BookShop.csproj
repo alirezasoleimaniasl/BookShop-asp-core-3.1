@@ -74,6 +74,7 @@
     <Folder Include="Areas\Api\Models\" />
     <Folder Include="Areas\Api\Views\" />
     <Folder Include="wwwroot\Files\" />
+    <Folder Include="wwwroot\BookFiles\" />
   </ItemGroup>
 
   <ItemGroup>

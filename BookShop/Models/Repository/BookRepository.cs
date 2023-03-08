@@ -189,6 +189,7 @@ namespace BookShop.Models.Repository
                     Author_Books = ViewModel.AuthorID.Select(a => new Author_Book { AuthorID = a }).ToList(),
                     book_Tranlators = translators,
                     book_Categories = categories,
+                    File = ViewModel.FileName,
                 };
 
                 await _UW.BaseRepository<Book>().Create(book);

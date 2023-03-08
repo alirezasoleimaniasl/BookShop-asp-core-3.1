@@ -1,9 +1,11 @@
 ﻿using BookShop.Areas.Admin.Data;
+using BookShop.Classes;
 using BookShop.Models;
 using BookShop.Models.Repository;
 using BookShop.Models.UnitOfWork;
 using BookShop.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Routing;
@@ -12,6 +14,7 @@ using ReflectionIT.Mvc.Paging;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using static BookShop.Models.ViewModels.BooksCreateEditViewModel;
@@ -24,10 +27,12 @@ namespace BookShop.Areas.Admin.Controllers
     public class BooksController : Controller
     {
         private readonly IUnitOfWork _UW;
+        private readonly IHostingEnvironment _env;
         //private readonly BookRepository _booksRepository;
-        public BooksController(IUnitOfWork UW)
+        public BooksController(IUnitOfWork UW, IHostingEnvironment env)
         {
             _UW = UW;
+            _env = env;
         }
         [Authorize(Policy =ConstantPolicies.DynamicPermission)]
         [DisplayName("مشاهده کتاب ها")]
@@ -97,6 +102,18 @@ namespace BookShop.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
+                if(ViewModel.File != null)
+                {
+                    string FileName = ViewModel.File.FileName;
+                    string FileExtension = Path.GetExtension(FileName);
+                    string NewFileName = String.Concat(Guid.NewGuid().ToString(), FileExtension);
+                    var path = $"{_env.WebRootPath}/BookFiles/{NewFileName}";
+                    using (var stream = new FileStream(path, FileMode.Create))
+                    {
+                        await ViewModel.File.CopyToAsync(stream);
+                    }
+                    ViewModel.FileName = NewFileName;
+                }
                 if (await _UW.BookRepository.CreateBookAsync(ViewModel))
                     return RedirectToAction("Index");
                 else
@@ -259,6 +276,21 @@ namespace BookShop.Areas.Admin.Controllers
             {
                 return View();
             }
+        }
+
+        public async Task<IActionResult> Download(int id)
+        {
+            var Book = await _UW.BaseRepository<Book>().FindByIdAsync(id);
+            if(Book == null)
+                return NotFound();
+            var Path = $"{_env.WebRootPath}/BookFiles/{Book.File}";
+            var memory = new MemoryStream();
+            using(var stream = new FileStream(Path, FileMode.Open))
+            {
+                await stream.CopyToAsync(memory);
+            }
+            memory.Position = 0;
+            return File(memory, FileExtensions.GetContentType(Path), Book.File);
         }
     }
 }
