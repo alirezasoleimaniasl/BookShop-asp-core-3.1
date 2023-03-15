@@ -14,7 +14,15 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-3">
-                        <img src="~/images/Book.png" width="250px" />
+                        @if(Model.Image != null)
+                        {
+                            <img src="/Admin/Books/ViewImage/@Model.BookID" width="250px" />
+                        }
+                        else
+                        {
+                            <img src="~/images/Book.png" width="250px" />
+                        }
+                        
                     </div>
                     <div class="col-md-9">
                         <div class="row">
