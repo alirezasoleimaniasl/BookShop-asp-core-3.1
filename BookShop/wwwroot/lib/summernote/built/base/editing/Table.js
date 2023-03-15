@@ -291,10 +291,10 @@ var Table = /** @class */ (function () {
      */
     Table.prototype.addRow = function (rng, position) {
         var cell = dom_1["default"].ancestor(rng.commonAncestor(), dom_1["default"].isCell);
-        var currentTr = jquery_1["default"](cell).closest('tr');
+        var currentTr = (0, jquery_1["default"])(cell).closest('tr');
         var trAttributes = this.recoverAttributes(currentTr);
-        var html = jquery_1["default"]('<tr' + trAttributes + '></tr>');
-        var vTable = new TableResultAction(cell, TableResultAction.where.Row, TableResultAction.requestAction.Add, jquery_1["default"](currentTr).closest('table')[0]);
+        var html = (0, jquery_1["default"])('<tr' + trAttributes + '></tr>');
+        var vTable = new TableResultAction(cell, TableResultAction.where.Row, TableResultAction.requestAction.Add, (0, jquery_1["default"])(currentTr).closest('table')[0]);
         var actions = vTable.getActionList();
         for (var idCell = 0; idCell < actions.length; idCell++) {
             var currentCell = actions[idCell];
@@ -308,7 +308,7 @@ var Table = /** @class */ (function () {
                         var baseCellTr = currentCell.baseCell.parent;
                         var isTopFromRowSpan = (!baseCellTr ? 0 : currentCell.baseCell.closest('tr').rowIndex) <= currentTr[0].rowIndex;
                         if (isTopFromRowSpan) {
-                            var newTd = jquery_1["default"]('<div></div>').append(jquery_1["default"]('<td' + tdAttributes + '>' + dom_1["default"].blank + '</td>').removeAttr('rowspan')).html();
+                            var newTd = (0, jquery_1["default"])('<div></div>').append((0, jquery_1["default"])('<td' + tdAttributes + '>' + dom_1["default"].blank + '</td>').removeAttr('rowspan')).html();
                             html.append(newTd);
                             break;
                         }
@@ -326,7 +326,7 @@ var Table = /** @class */ (function () {
             var cellHasRowspan = (cell.rowSpan > 1);
             if (cellHasRowspan) {
                 var lastTrIndex = currentTr[0].rowIndex + (cell.rowSpan - 2);
-                jquery_1["default"](jquery_1["default"](currentTr).parent().find('tr')[lastTrIndex]).after(jquery_1["default"](html));
+                (0, jquery_1["default"])((0, jquery_1["default"])(currentTr).parent().find('tr')[lastTrIndex]).after((0, jquery_1["default"])(html));
                 return;
             }
             currentTr.after(html);
@@ -341,10 +341,10 @@ var Table = /** @class */ (function () {
      */
     Table.prototype.addCol = function (rng, position) {
         var cell = dom_1["default"].ancestor(rng.commonAncestor(), dom_1["default"].isCell);
-        var row = jquery_1["default"](cell).closest('tr');
-        var rowsGroup = jquery_1["default"](row).siblings();
+        var row = (0, jquery_1["default"])(cell).closest('tr');
+        var rowsGroup = (0, jquery_1["default"])(row).siblings();
         rowsGroup.push(row);
-        var vTable = new TableResultAction(cell, TableResultAction.where.Column, TableResultAction.requestAction.Add, jquery_1["default"](row).closest('table')[0]);
+        var vTable = new TableResultAction(cell, TableResultAction.where.Column, TableResultAction.requestAction.Add, (0, jquery_1["default"])(row).closest('table')[0]);
         var actions = vTable.getActionList();
         for (var actionIndex = 0; actionIndex < actions.length; actionIndex++) {
             var currentCell = actions[actionIndex];
@@ -352,10 +352,10 @@ var Table = /** @class */ (function () {
             switch (currentCell.action) {
                 case TableResultAction.resultAction.AddCell:
                     if (position === 'right') {
-                        jquery_1["default"](currentCell.baseCell).after('<td' + tdAttributes + '>' + dom_1["default"].blank + '</td>');
+                        (0, jquery_1["default"])(currentCell.baseCell).after('<td' + tdAttributes + '>' + dom_1["default"].blank + '</td>');
                     }
                     else {
-                        jquery_1["default"](currentCell.baseCell).before('<td' + tdAttributes + '>' + dom_1["default"].blank + '</td>');
+                        (0, jquery_1["default"])(currentCell.baseCell).before('<td' + tdAttributes + '>' + dom_1["default"].blank + '</td>');
                     }
                     break;
                 case TableResultAction.resultAction.SumSpanCount:
@@ -365,7 +365,7 @@ var Table = /** @class */ (function () {
                         currentCell.baseCell.setAttribute('colSpan', colspanNumber);
                     }
                     else {
-                        jquery_1["default"](currentCell.baseCell).before('<td' + tdAttributes + '>' + dom_1["default"].blank + '</td>');
+                        (0, jquery_1["default"])(currentCell.baseCell).before('<td' + tdAttributes + '>' + dom_1["default"].blank + '</td>');
                     }
                     break;
             }
@@ -401,10 +401,10 @@ var Table = /** @class */ (function () {
      */
     Table.prototype.deleteRow = function (rng) {
         var cell = dom_1["default"].ancestor(rng.commonAncestor(), dom_1["default"].isCell);
-        var row = jquery_1["default"](cell).closest('tr');
-        var cellPos = row.children('td, th').index(jquery_1["default"](cell));
+        var row = (0, jquery_1["default"])(cell).closest('tr');
+        var cellPos = row.children('td, th').index((0, jquery_1["default"])(cell));
         var rowPos = row[0].rowIndex;
-        var vTable = new TableResultAction(cell, TableResultAction.where.Row, TableResultAction.requestAction.Delete, jquery_1["default"](row).closest('table')[0]);
+        var vTable = new TableResultAction(cell, TableResultAction.where.Row, TableResultAction.requestAction.Delete, (0, jquery_1["default"])(row).closest('table')[0]);
         var actions = vTable.getActionList();
         for (var actionIndex = 0; actionIndex < actions.length; actionIndex++) {
             if (!actions[actionIndex]) {
@@ -469,9 +469,9 @@ var Table = /** @class */ (function () {
      */
     Table.prototype.deleteCol = function (rng) {
         var cell = dom_1["default"].ancestor(rng.commonAncestor(), dom_1["default"].isCell);
-        var row = jquery_1["default"](cell).closest('tr');
-        var cellPos = row.children('td, th').index(jquery_1["default"](cell));
-        var vTable = new TableResultAction(cell, TableResultAction.where.Column, TableResultAction.requestAction.Delete, jquery_1["default"](row).closest('table')[0]);
+        var row = (0, jquery_1["default"])(cell).closest('tr');
+        var cellPos = row.children('td, th').index((0, jquery_1["default"])(cell));
+        var vTable = new TableResultAction(cell, TableResultAction.where.Column, TableResultAction.requestAction.Delete, (0, jquery_1["default"])(row).closest('table')[0]);
         var actions = vTable.getActionList();
         for (var actionIndex = 0; actionIndex < actions.length; actionIndex++) {
             if (!actions[actionIndex]) {
@@ -526,7 +526,7 @@ var Table = /** @class */ (function () {
             trs.push('<tr>' + tdHTML + '</tr>');
         }
         trHTML = trs.join('');
-        var $table = jquery_1["default"]('<table>' + trHTML + '</table>');
+        var $table = (0, jquery_1["default"])('<table>' + trHTML + '</table>');
         if (options && options.tableClassName) {
             $table.addClass(options.tableClassName);
         }
@@ -540,7 +540,7 @@ var Table = /** @class */ (function () {
      */
     Table.prototype.deleteTable = function (rng) {
         var cell = dom_1["default"].ancestor(rng.commonAncestor(), dom_1["default"].isCell);
-        jquery_1["default"](cell).closest('table').remove();
+        (0, jquery_1["default"])(cell).closest('table').remove();
     };
     return Table;
 }());

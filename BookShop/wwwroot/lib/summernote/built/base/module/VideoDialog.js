@@ -7,7 +7,7 @@ var VideoDialog = /** @class */ (function () {
     function VideoDialog(context) {
         this.context = context;
         this.ui = jquery_1["default"].summernote.ui;
-        this.$body = jquery_1["default"](document.body);
+        this.$body = (0, jquery_1["default"])(document.body);
         this.$editor = context.layoutInfo.editor;
         this.options = context.options;
         this.lang = this.options.langInfo;
@@ -16,12 +16,12 @@ var VideoDialog = /** @class */ (function () {
         var $container = this.options.dialogsInBody ? this.$body : this.$editor;
         var body = [
             '<div class="form-group note-form-group row-fluid">',
-            "<label class=\"note-form-label\">" + this.lang.video.url + " <small class=\"text-muted\">" + this.lang.video.providers + "</small></label>",
+            "<label class=\"note-form-label\">".concat(this.lang.video.url, " <small class=\"text-muted\">").concat(this.lang.video.providers, "</small></label>"),
             '<input class="note-video-url form-control note-form-control note-input" type="text" />',
             '</div>'
         ].join('');
         var buttonClass = 'btn btn-primary note-btn note-btn-primary note-video-btn';
-        var footer = "<input type=\"button\" href=\"#\" class=\"" + buttonClass + "\" value=\"" + this.lang.video.insert + "\" disabled>";
+        var footer = "<input type=\"button\" href=\"#\" class=\"".concat(buttonClass, "\" value=\"").concat(this.lang.video.insert, "\" disabled>");
         this.$dialog = this.ui.dialog({
             title: this.lang.video.insert,
             fade: this.options.dialogsFade,
@@ -78,13 +78,13 @@ var VideoDialog = /** @class */ (function () {
                     }
                 }
             }
-            $video = jquery_1["default"]('<iframe>')
+            $video = (0, jquery_1["default"])('<iframe>')
                 .attr('frameborder', 0)
                 .attr('src', '//www.youtube.com/embed/' + youtubeId + (start > 0 ? '?start=' + start : ''))
                 .attr('width', '640').attr('height', '360');
         }
         else if (igMatch && igMatch[0].length) {
-            $video = jquery_1["default"]('<iframe>')
+            $video = (0, jquery_1["default"])('<iframe>')
                 .attr('frameborder', 0)
                 .attr('src', 'https://instagram.com/p/' + igMatch[1] + '/embed/')
                 .attr('width', '612').attr('height', '710')
@@ -92,26 +92,26 @@ var VideoDialog = /** @class */ (function () {
                 .attr('allowtransparency', 'true');
         }
         else if (vMatch && vMatch[0].length) {
-            $video = jquery_1["default"]('<iframe>')
+            $video = (0, jquery_1["default"])('<iframe>')
                 .attr('frameborder', 0)
                 .attr('src', vMatch[0] + '/embed/simple')
                 .attr('width', '600').attr('height', '600')
                 .attr('class', 'vine-embed');
         }
         else if (vimMatch && vimMatch[3].length) {
-            $video = jquery_1["default"]('<iframe webkitallowfullscreen mozallowfullscreen allowfullscreen>')
+            $video = (0, jquery_1["default"])('<iframe webkitallowfullscreen mozallowfullscreen allowfullscreen>')
                 .attr('frameborder', 0)
                 .attr('src', '//player.vimeo.com/video/' + vimMatch[3])
                 .attr('width', '640').attr('height', '360');
         }
         else if (dmMatch && dmMatch[2].length) {
-            $video = jquery_1["default"]('<iframe>')
+            $video = (0, jquery_1["default"])('<iframe>')
                 .attr('frameborder', 0)
                 .attr('src', '//www.dailymotion.com/embed/video/' + dmMatch[2])
                 .attr('width', '640').attr('height', '360');
         }
         else if (youkuMatch && youkuMatch[1].length) {
-            $video = jquery_1["default"]('<iframe webkitallowfullscreen mozallowfullscreen allowfullscreen>')
+            $video = (0, jquery_1["default"])('<iframe webkitallowfullscreen mozallowfullscreen allowfullscreen>')
                 .attr('frameborder', 0)
                 .attr('height', '498')
                 .attr('width', '510')
@@ -119,14 +119,14 @@ var VideoDialog = /** @class */ (function () {
         }
         else if ((qqMatch && qqMatch[1].length) || (qqMatch2 && qqMatch2[2].length)) {
             var vid = ((qqMatch && qqMatch[1].length) ? qqMatch[1] : qqMatch2[2]);
-            $video = jquery_1["default"]('<iframe webkitallowfullscreen mozallowfullscreen allowfullscreen>')
+            $video = (0, jquery_1["default"])('<iframe webkitallowfullscreen mozallowfullscreen allowfullscreen>')
                 .attr('frameborder', 0)
                 .attr('height', '310')
                 .attr('width', '500')
                 .attr('src', 'http://v.qq.com/iframe/player.html?vid=' + vid + '&amp;auto=0');
         }
         else if (mp4Match || oggMatch || webmMatch) {
-            $video = jquery_1["default"]('<video controls>')
+            $video = (0, jquery_1["default"])('<video controls>')
                 .attr('src', url)
                 .attr('width', '640').attr('height', '360');
         }

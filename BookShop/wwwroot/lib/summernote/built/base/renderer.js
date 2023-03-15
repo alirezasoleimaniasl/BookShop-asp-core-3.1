@@ -9,7 +9,7 @@ var Renderer = /** @class */ (function () {
         this.callback = callback;
     }
     Renderer.prototype.render = function ($parent) {
-        var $node = jquery_1["default"](this.markup);
+        var $node = (0, jquery_1["default"])(this.markup);
         if (this.options && this.options.contents) {
             $node.html(this.options.contents);
         }

@@ -21,7 +21,7 @@ var Placeholder = /** @class */ (function () {
     };
     Placeholder.prototype.initialize = function () {
         var _this = this;
-        this.$placeholder = jquery_1["default"]('<div class="note-placeholder">');
+        this.$placeholder = (0, jquery_1["default"])('<div class="note-placeholder">');
         this.$placeholder.on('click', function () {
             _this.context.invoke('focus');
         }).html(this.options.placeholder).prependTo(this.$editingArea);

@@ -9,8 +9,8 @@ var Fullscreen = /** @class */ (function () {
         this.$toolbar = context.layoutInfo.toolbar;
         this.$editable = context.layoutInfo.editable;
         this.$codable = context.layoutInfo.codable;
-        this.$window = jquery_1["default"](window);
-        this.$scrollbar = jquery_1["default"]('html, body');
+        this.$window = (0, jquery_1["default"])(window);
+        this.$scrollbar = (0, jquery_1["default"])('html, body');
         this.onResize = function () {
             _this.resizeTo({
                 h: _this.$window.height() - _this.$toolbar.outerHeight()

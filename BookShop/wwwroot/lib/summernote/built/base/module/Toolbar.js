@@ -4,8 +4,8 @@ var jquery_1 = require("jquery");
 var Toolbar = /** @class */ (function () {
     function Toolbar(context) {
         this.context = context;
-        this.$window = jquery_1["default"](window);
-        this.$document = jquery_1["default"](document);
+        this.$window = (0, jquery_1["default"])(window);
+        this.$document = (0, jquery_1["default"])(document);
         this.ui = jquery_1["default"].summernote.ui;
         this.$note = context.layoutInfo.note;
         this.$editor = context.layoutInfo.editor;
@@ -57,7 +57,7 @@ var Toolbar = /** @class */ (function () {
         // check if the web app is currently using another static bar
         var otherBarHeight = 0;
         if (this.options.otherStaticBar) {
-            otherBarHeight = jquery_1["default"](this.options.otherStaticBar).outerHeight();
+            otherBarHeight = (0, jquery_1["default"])(this.options.otherStaticBar).outerHeight();
         }
         var currentOffset = this.$document.scrollTop();
         var editorOffsetTop = this.$editor.offset().top;

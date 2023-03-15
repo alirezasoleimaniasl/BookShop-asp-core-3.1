@@ -67,11 +67,11 @@ var Typing = /** @class */ (function () {
                 }
                 if (blockquote) {
                     // We're inside a blockquote and options ask us to break it
-                    nextPara = jquery_1["default"](dom_1["default"].emptyPara)[0];
+                    nextPara = (0, jquery_1["default"])(dom_1["default"].emptyPara)[0];
                     // If the split is right before a <br>, remove it so that there's no "empty line"
                     // after the split in the new blockquote created
                     if (dom_1["default"].isRightEdgePoint(rng.getStartPoint()) && dom_1["default"].isBR(rng.sc.nextSibling)) {
-                        jquery_1["default"](rng.sc.nextSibling).remove();
+                        (0, jquery_1["default"])(rng.sc.nextSibling).remove();
                     }
                     var split = dom_1["default"].splitTree(blockquote, rng.getStartPoint(), { isDiscardEmptySplits: true });
                     if (split) {
@@ -99,7 +99,7 @@ var Typing = /** @class */ (function () {
         }
         else {
             var next = rng.sc.childNodes[rng.so];
-            nextPara = jquery_1["default"](dom_1["default"].emptyPara)[0];
+            nextPara = (0, jquery_1["default"])(dom_1["default"].emptyPara)[0];
             if (next) {
                 rng.sc.insertBefore(nextPara, next);
             }

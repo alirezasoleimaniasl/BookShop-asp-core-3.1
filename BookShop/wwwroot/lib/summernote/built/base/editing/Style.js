@@ -53,7 +53,7 @@ var Style = /** @class */ (function () {
         jquery_1["default"].each(rng.nodes(dom_1["default"].isPara, {
             includeAncestor: true
         }), function (idx, para) {
-            jquery_1["default"](para).css(styleInfo);
+            (0, jquery_1["default"])(para).css(styleInfo);
         });
     };
     /**
@@ -110,7 +110,7 @@ var Style = /** @class */ (function () {
      * @return {Object} - object contains style properties.
      */
     Style.prototype.current = function (rng) {
-        var $cont = jquery_1["default"](!dom_1["default"].isElement(rng.sc) ? rng.sc.parentNode : rng.sc);
+        var $cont = (0, jquery_1["default"])(!dom_1["default"].isElement(rng.sc) ? rng.sc.parentNode : rng.sc);
         var styleInfo = this.fromNode($cont);
         // document.queryCommandState for toggle state
         // [workaround] prevent Firefox nsresult: "0x80004005 (NS_ERROR_FAILURE)"

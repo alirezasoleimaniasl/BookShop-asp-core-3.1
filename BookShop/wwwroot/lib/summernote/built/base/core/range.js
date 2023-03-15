@@ -183,7 +183,7 @@ var WrappedRange = /** @class */ (function () {
      * @return {WrappedRange}
      */
     WrappedRange.prototype.scrollIntoView = function (container) {
-        var height = jquery_1["default"](container).height();
+        var height = (0, jquery_1["default"])(container).height();
         if (container.scrollTop + height < this.sc.offsetTop) {
             container.scrollTop += Math.abs(container.scrollTop + height - this.sc.offsetTop);
         }
@@ -447,7 +447,7 @@ var WrappedRange = /** @class */ (function () {
      * insert html at current cursor
      */
     WrappedRange.prototype.pasteHTML = function (markup) {
-        var contentsContainer = jquery_1["default"]('<div></div>').html(markup)[0];
+        var contentsContainer = (0, jquery_1["default"])('<div></div>').html(markup)[0];
         var childNodes = lists_1["default"].from(contentsContainer.childNodes);
         var rng = this.wrapBodyInlineWithPara().deleteContents();
         if (rng.so > 0) {

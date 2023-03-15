@@ -46,7 +46,7 @@ var HintPopover = /** @class */ (function () {
         this.$content = this.$popover.find('.popover-content,.note-popover-content');
         this.$content.on('click', '.note-hint-item', function (e) {
             _this.$content.find('.active').removeClass('active');
-            jquery_1["default"](e.currentTarget).addClass('active');
+            (0, jquery_1["default"])(e.currentTarget).addClass('active');
             _this.replace();
         });
     };
@@ -111,7 +111,7 @@ var HintPopover = /** @class */ (function () {
     HintPopover.prototype.createItemTemplates = function (hintIdx, items) {
         var hint = this.hints[hintIdx];
         return items.map(function (item, idx) {
-            var $item = jquery_1["default"]('<div class="note-hint-item"/>');
+            var $item = (0, jquery_1["default"])('<div class="note-hint-item"/>');
             $item.append(hint.template ? hint.template(item) : item + '');
             $item.data({
                 'index': hintIdx,
@@ -149,7 +149,7 @@ var HintPopover = /** @class */ (function () {
     };
     HintPopover.prototype.createGroup = function (idx, keyword) {
         var _this = this;
-        var $group = jquery_1["default"]('<div class="note-hint-group note-hint-group-' + idx + '"/>');
+        var $group = (0, jquery_1["default"])('<div class="note-hint-group note-hint-group-' + idx + '"/>');
         this.searchKeyword(idx, keyword, function (items) {
             items = items || [];
             if (items.length) {

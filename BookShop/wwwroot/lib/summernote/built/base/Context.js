@@ -180,7 +180,7 @@ var Context = /** @class */ (function () {
         var _this = this;
         return function (event) {
             event.preventDefault();
-            var $target = jquery_1["default"](event.target);
+            var $target = (0, jquery_1["default"])(event.target);
             _this.invoke(namespace, value || $target.closest('[data-value]').data('value'), $target);
         };
     };

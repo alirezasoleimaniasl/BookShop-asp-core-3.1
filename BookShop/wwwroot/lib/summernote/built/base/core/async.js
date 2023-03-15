@@ -34,7 +34,7 @@ exports.readFileAsDataURL = readFileAsDataURL;
  */
 function createImage(url) {
     return jquery_1["default"].Deferred(function (deferred) {
-        var $img = jquery_1["default"]('<img>');
+        var $img = (0, jquery_1["default"])('<img>');
         $img.one('load', function () {
             $img.off('error abort');
             deferred.resolve($img);

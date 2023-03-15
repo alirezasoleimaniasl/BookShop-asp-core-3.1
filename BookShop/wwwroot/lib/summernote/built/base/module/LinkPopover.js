@@ -44,7 +44,7 @@ var LinkPopover = /** @class */ (function () {
         var rng = this.context.invoke('editor.createRange');
         if (rng.isCollapsed() && rng.isOnAnchor()) {
             var anchor = dom_1["default"].ancestor(rng.sc, dom_1["default"].isAnchor);
-            var href = jquery_1["default"](anchor).attr('href');
+            var href = (0, jquery_1["default"])(anchor).attr('href');
             this.$popover.find('a').attr('href', href).html(href);
             var pos = dom_1["default"].posFromPlaceholder(anchor);
             this.$popover.css({

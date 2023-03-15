@@ -10,7 +10,7 @@ var isSupportAmd = typeof define === 'function' && define.amd; // eslint-disable
  */
 function isFontInstalled(fontName) {
     var testFontName = fontName === 'Comic Sans MS' ? 'Courier New' : 'Comic Sans MS';
-    var $tester = jquery_1["default"]('<div>').css({
+    var $tester = (0, jquery_1["default"])('<div>').css({
         position: 'absolute',
         left: '-9999px',
         top: '-9999px',

@@ -21,7 +21,7 @@ jquery_1["default"].fn.extend({
         options.icons = jquery_1["default"].extend(true, {}, jquery_1["default"].summernote.options.icons, options.icons);
         options.tooltip = options.tooltip === 'auto' ? !env_1["default"].isSupportTouch : options.tooltip;
         this.each(function (idx, note) {
-            var $note = jquery_1["default"](note);
+            var $note = (0, jquery_1["default"])(note);
             if (!$note.data('summernote')) {
                 var context = new Context_1["default"]($note, options);
                 $note.data('summernote', context);

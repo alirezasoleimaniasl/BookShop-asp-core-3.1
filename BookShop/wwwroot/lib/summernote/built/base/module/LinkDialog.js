@@ -7,7 +7,7 @@ var LinkDialog = /** @class */ (function () {
     function LinkDialog(context) {
         this.context = context;
         this.ui = jquery_1["default"].summernote.ui;
-        this.$body = jquery_1["default"](document.body);
+        this.$body = (0, jquery_1["default"])(document.body);
         this.$editor = context.layoutInfo.editor;
         this.options = context.options;
         this.lang = this.options.langInfo;
@@ -17,15 +17,15 @@ var LinkDialog = /** @class */ (function () {
         var $container = this.options.dialogsInBody ? this.$body : this.$editor;
         var body = [
             '<div class="form-group note-form-group">',
-            "<label class=\"note-form-label\">" + this.lang.link.textToDisplay + "</label>",
+            "<label class=\"note-form-label\">".concat(this.lang.link.textToDisplay, "</label>"),
             '<input class="note-link-text form-control note-form-control note-input" type="text" />',
             '</div>',
             '<div class="form-group note-form-group">',
-            "<label class=\"note-form-label\">" + this.lang.link.url + "</label>",
+            "<label class=\"note-form-label\">".concat(this.lang.link.url, "</label>"),
             '<input class="note-link-url form-control note-form-control note-input" type="text" value="http://" />',
             '</div>',
             !this.options.disableLinkTarget
-                ? jquery_1["default"]('<div/>').append(this.ui.checkbox({
+                ? (0, jquery_1["default"])('<div/>').append(this.ui.checkbox({
                     className: 'sn-checkbox-open-in-new-window',
                     text: this.lang.link.openInNewWindow,
                     checked: true
@@ -33,7 +33,7 @@ var LinkDialog = /** @class */ (function () {
                 : ''
         ].join('');
         var buttonClass = 'btn btn-primary note-btn note-btn-primary note-link-btn';
-        var footer = "<input type=\"button\" href=\"#\" class=\"" + buttonClass + "\" value=\"" + this.lang.link.insert + "\" disabled>";
+        var footer = "<input type=\"button\" href=\"#\" class=\"".concat(buttonClass, "\" value=\"").concat(this.lang.link.insert, "\" disabled>");
         this.$dialog = this.ui.dialog({
             className: 'link-dialog',
             title: this.lang.link.insert,

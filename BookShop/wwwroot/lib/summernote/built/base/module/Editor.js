@@ -97,7 +97,7 @@ var Editor = /** @class */ (function () {
          * @param {Node} node
          */
         this.insertNode = this.wrapCommand(function (node) {
-            if (_this.isLimited(jquery_1["default"](node).text().length)) {
+            if (_this.isLimited((0, jquery_1["default"])(node).text().length)) {
                 return;
             }
             var rng = _this.createRange();
@@ -192,7 +192,7 @@ var Editor = /** @class */ (function () {
             var anchors = [];
             if (isTextChanged) {
                 rng = rng.deleteContents();
-                var anchor = rng.insertNode(jquery_1["default"]('<A>' + linkText + '</A>')[0]);
+                var anchor = rng.insertNode((0, jquery_1["default"])('<A>' + linkText + '</A>')[0]);
                 anchors.push(anchor);
             }
             else {
@@ -203,12 +203,12 @@ var Editor = /** @class */ (function () {
                 });
             }
             jquery_1["default"].each(anchors, function (idx, anchor) {
-                jquery_1["default"](anchor).attr('href', linkUrl);
+                (0, jquery_1["default"])(anchor).attr('href', linkUrl);
                 if (isNewWindow) {
-                    jquery_1["default"](anchor).attr('target', '_blank');
+                    (0, jquery_1["default"])(anchor).attr('target', '_blank');
                 }
                 else {
-                    jquery_1["default"](anchor).removeAttr('target');
+                    (0, jquery_1["default"])(anchor).removeAttr('target');
                 }
             });
             var startRange = range_1["default"].createFromNodeBefore(lists_1["default"].head(anchors));
@@ -257,12 +257,12 @@ var Editor = /** @class */ (function () {
          * remove media object and Figure Elements if media object is img with Figure.
          */
         this.removeMedia = this.wrapCommand(function () {
-            var $target = jquery_1["default"](_this.restoreTarget()).parent();
+            var $target = (0, jquery_1["default"])(_this.restoreTarget()).parent();
             if ($target.parent('figure').length) {
                 $target.parent('figure').remove();
             }
             else {
-                $target = jquery_1["default"](_this.restoreTarget()).detach();
+                $target = (0, jquery_1["default"])(_this.restoreTarget()).detach();
             }
             _this.context.triggerEvent('media.delete', $target, _this.$editable);
         });
@@ -272,7 +272,7 @@ var Editor = /** @class */ (function () {
          * @param {String} value
          */
         this.floatMe = this.wrapCommand(function (value) {
-            var $target = jquery_1["default"](_this.restoreTarget());
+            var $target = (0, jquery_1["default"])(_this.restoreTarget());
             $target.toggleClass('note-float-left', value === 'left');
             $target.toggleClass('note-float-right', value === 'right');
             $target.css('float', value);
@@ -282,7 +282,7 @@ var Editor = /** @class */ (function () {
          * @param {String} value
          */
         this.resize = this.wrapCommand(function (value) {
-            var $target = jquery_1["default"](_this.restoreTarget());
+            var $target = (0, jquery_1["default"])(_this.restoreTarget());
             $target.css({
                 width: value * 100 + '%',
                 height: ''
@@ -559,7 +559,7 @@ var Editor = /** @class */ (function () {
      */
     Editor.prototype.insertImage = function (src, param) {
         var _this = this;
-        return async_1.createImage(src, param).then(function ($image) {
+        return (0, async_1.createImage)(src, param).then(function ($image) {
             _this.beforeCommand();
             if (typeof param === 'function') {
                 param($image);
@@ -590,7 +590,7 @@ var Editor = /** @class */ (function () {
                 _this.context.triggerEvent('image.upload.error', _this.lang.image.maximumFileSizeError);
             }
             else {
-                async_1.readFileAsDataURL(file).then(function (dataURL) {
+                (0, async_1.readFileAsDataURL)(file).then(function (dataURL) {
                     return _this.insertImage(dataURL, filename);
                 }).fail(function () {
                     _this.context.triggerEvent('image.upload.error');
@@ -619,7 +619,7 @@ var Editor = /** @class */ (function () {
             var className = $target[0].className || '';
             if (className) {
                 var currentRange = this.createRange();
-                var $parent = jquery_1["default"]([currentRange.sc, currentRange.ec]).closest(tagName);
+                var $parent = (0, jquery_1["default"])([currentRange.sc, currentRange.ec]).closest(tagName);
                 $parent.addClass(className);
             }
         }
@@ -631,7 +631,7 @@ var Editor = /** @class */ (function () {
         var rng = this.createRange();
         if (rng) {
             var spans = this.style.styleNodes(rng);
-            jquery_1["default"](spans).css(target, value);
+            (0, jquery_1["default"])(spans).css(target, value);
             // [workaround] added styled bogus span for style
             //  - also bogus character needed for cursor position
             if (rng.isCollapsed()) {
@@ -672,7 +672,7 @@ var Editor = /** @class */ (function () {
     Editor.prototype.getLinkInfo = function () {
         var rng = this.createRange().expand(dom_1["default"].isAnchor);
         // Get the first anchor on range(for edit).
-        var $anchor = jquery_1["default"](lists_1["default"].head(rng.nodes(dom_1["default"].isAnchor)));
+        var $anchor = (0, jquery_1["default"])(lists_1["default"].head(rng.nodes(dom_1["default"].isAnchor)));
         var linkInfo = {
             range: rng,
             text: rng.toString(),

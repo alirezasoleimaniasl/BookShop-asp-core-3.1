@@ -6,7 +6,7 @@ var Handle = /** @class */ (function () {
     function Handle(context) {
         var _this = this;
         this.context = context;
-        this.$document = jquery_1["default"](document);
+        this.$document = (0, jquery_1["default"])(document);
         this.$editingArea = context.layoutInfo.editingArea;
         this.options = context.options;
         this.lang = this.options.langInfo;
@@ -29,7 +29,7 @@ var Handle = /** @class */ (function () {
     }
     Handle.prototype.initialize = function () {
         var _this = this;
-        this.$handle = jquery_1["default"]([
+        this.$handle = (0, jquery_1["default"])([
             '<div class="note-handle">',
             '<div class="note-control-selection">',
             '<div class="note-control-selection-bg"></div>',
@@ -86,7 +86,7 @@ var Handle = /** @class */ (function () {
         var $selection = this.$handle.find('.note-control-selection');
         this.context.invoke('imagePopover.update', target);
         if (isImage) {
-            var $image = jquery_1["default"](target);
+            var $image = (0, jquery_1["default"])(target);
             var position = $image.position();
             var pos = {
                 left: position.left + parseInt($image.css('marginLeft'), 10),

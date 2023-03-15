@@ -66,7 +66,7 @@ var Buttons = /** @class */ (function () {
                     contents: this.ui.icon(this.options.icons.font + ' note-recent-color'),
                     tooltip: tooltip,
                     click: function (e) {
-                        var $button = jquery_1["default"](e.currentTarget);
+                        var $button = (0, jquery_1["default"])(e.currentTarget);
                         if (backColor && foreColor) {
                             _this.context.invoke('editor.color', {
                                 backColor: $button.attr('data-backColor'),
@@ -141,7 +141,7 @@ var Buttons = /** @class */ (function () {
                         ].join('') : ''),
                     callback: function ($dropdown) {
                         $dropdown.find('.note-holder').each(function (idx, item) {
-                            var $holder = jquery_1["default"](item);
+                            var $holder = (0, jquery_1["default"])(item);
                             $holder.append(_this.ui.palette({
                                 colors: _this.options.colors,
                                 colorsName: _this.options.colorsName,
@@ -155,7 +155,7 @@ var Buttons = /** @class */ (function () {
                             ['#FFFFFF', '#FFFFFF', '#FFFFFF', '#FFFFFF', '#FFFFFF', '#FFFFFF', '#FFFFFF', '#FFFFFF']
                         ];
                         $dropdown.find('.note-holder-custom').each(function (idx, item) {
-                            var $holder = jquery_1["default"](item);
+                            var $holder = (0, jquery_1["default"])(item);
                             $holder.append(_this.ui.palette({
                                 colors: customColors,
                                 colorsName: customColors,
@@ -165,8 +165,8 @@ var Buttons = /** @class */ (function () {
                             }).render());
                         });
                         $dropdown.find('input[type=color]').each(function (idx, item) {
-                            jquery_1["default"](item).change(function () {
-                                var $chip = $dropdown.find('#' + jquery_1["default"](this).data('event')).find('.note-color-btn').first();
+                            (0, jquery_1["default"])(item).change(function () {
+                                var $chip = $dropdown.find('#' + (0, jquery_1["default"])(this).data('event')).find('.note-color-btn').first();
                                 var color = this.value.toUpperCase();
                                 $chip.css('background-color', color)
                                     .attr('aria-label', color)
@@ -178,13 +178,13 @@ var Buttons = /** @class */ (function () {
                     },
                     click: function (event) {
                         event.stopPropagation();
-                        var $parent = jquery_1["default"]('.' + className);
-                        var $button = jquery_1["default"](event.target);
+                        var $parent = (0, jquery_1["default"])('.' + className);
+                        var $button = (0, jquery_1["default"])(event.target);
                         var eventName = $button.data('event');
                         var value = $button.attr('data-value');
                         if (eventName === 'openPalette') {
                             var $picker = $parent.find('#' + value);
-                            var $palette = jquery_1["default"]($parent.find('#' + $picker.data('event')).find('.note-color-row')[0]);
+                            var $palette = (0, jquery_1["default"])($parent.find('#' + $picker.data('event')).find('.note-color-row')[0]);
                             // Shift palette chips
                             var $chip = $palette.find('.note-color-btn').last().detach();
                             // Set chip attributes
@@ -755,7 +755,7 @@ var Buttons = /** @class */ (function () {
             });
             var fontName_1 = lists_1["default"].find(fontNames, this.isFontInstalled.bind(this));
             $cont.find('.dropdown-fontname a').each(function (idx, item) {
-                var $item = jquery_1["default"](item);
+                var $item = (0, jquery_1["default"])(item);
                 // always compare string to avoid creating another func.
                 var isChecked = ($item.data('value') + '') === (fontName_1 + '');
                 $item.toggleClass('checked', isChecked);
@@ -765,7 +765,7 @@ var Buttons = /** @class */ (function () {
         if (styleInfo['font-size']) {
             var fontSize_1 = styleInfo['font-size'];
             $cont.find('.dropdown-fontsize a').each(function (idx, item) {
-                var $item = jquery_1["default"](item);
+                var $item = (0, jquery_1["default"])(item);
                 // always compare with string to avoid creating another func.
                 var isChecked = ($item.data('value') + '') === (fontSize_1 + '');
                 $item.toggleClass('checked', isChecked);
@@ -776,7 +776,7 @@ var Buttons = /** @class */ (function () {
             var lineHeight_1 = styleInfo['line-height'];
             $cont.find('.dropdown-line-height li a').each(function (idx, item) {
                 // always compare with string to avoid creating another func.
-                var isChecked = (jquery_1["default"](item).data('value') + '') === (lineHeight_1 + '');
+                var isChecked = ((0, jquery_1["default"])(item).data('value') + '') === (lineHeight_1 + '');
                 _this.className = isChecked ? 'checked' : '';
             });
         }
@@ -789,7 +789,7 @@ var Buttons = /** @class */ (function () {
     };
     Buttons.prototype.tableMoveHandler = function (event) {
         var PX_PER_EM = 18;
-        var $picker = jquery_1["default"](event.target.parentNode); // target is mousecatcher
+        var $picker = (0, jquery_1["default"])(event.target.parentNode); // target is mousecatcher
         var $dimensionDisplay = $picker.next();
         var $catcher = $picker.find('.note-dimension-picker-mousecatcher');
         var $highlighted = $picker.find('.note-dimension-picker-highlighted');
@@ -797,7 +797,7 @@ var Buttons = /** @class */ (function () {
         var posOffset;
         // HTML5 with jQuery - e.offsetX is undefined in Firefox
         if (event.offsetX === undefined) {
-            var posCatcher = jquery_1["default"](event.target).offset();
+            var posCatcher = (0, jquery_1["default"])(event.target).offset();
             posOffset = {
                 x: event.pageX - posCatcher.left,
                 y: event.pageY - posCatcher.top

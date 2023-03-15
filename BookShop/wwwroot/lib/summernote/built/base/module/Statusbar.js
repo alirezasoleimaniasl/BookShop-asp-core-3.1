@@ -4,7 +4,7 @@ var jquery_1 = require("jquery");
 var EDITABLE_PADDING = 24;
 var Statusbar = /** @class */ (function () {
     function Statusbar(context) {
-        this.$document = jquery_1["default"](document);
+        this.$document = (0, jquery_1["default"])(document);
         this.$statusbar = context.layoutInfo.statusbar;
         this.$editable = context.layoutInfo.editable;
         this.options = context.options;

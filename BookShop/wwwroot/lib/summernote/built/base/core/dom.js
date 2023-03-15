@@ -15,7 +15,7 @@ var ZERO_WIDTH_NBSP_CHAR = '\ufeff';
  * @return {Boolean}
  */
 function isEditable(node) {
-    return node && jquery_1["default"](node).hasClass('note-editable');
+    return node && (0, jquery_1["default"])(node).hasClass('note-editable');
 }
 /**
  * @method isControlSizing
@@ -26,7 +26,7 @@ function isEditable(node) {
  * @return {Boolean}
  */
 function isControlSizing(node) {
-    return node && jquery_1["default"](node).hasClass('note-control-sizing');
+    return node && (0, jquery_1["default"])(node).hasClass('note-control-sizing');
 }
 /**
  * @method makePredByNodeName
@@ -341,7 +341,7 @@ function listDescendant(node, pred) {
  */
 function wrap(node, wrapperName) {
     var parent = node.parentNode;
-    var wrapper = jquery_1["default"]('<' + wrapperName + '>')[0];
+    var wrapper = (0, jquery_1["default"])('<' + wrapperName + '>')[0];
     parent.insertBefore(wrapper, node);
     wrapper.appendChild(node);
     return wrapper;
@@ -881,7 +881,7 @@ function html($node, isNewlineOnBlock) {
     return markup;
 }
 function posFromPlaceholder(placeholder) {
-    var $placeholder = jquery_1["default"](placeholder);
+    var $placeholder = (0, jquery_1["default"])(placeholder);
     var pos = $placeholder.offset();
     var height = $placeholder.outerHeight(true); // include margin
     return {
@@ -918,7 +918,7 @@ exports["default"] = {
     /** @property {String} blank */
     blank: blankHTML,
     /** @property {String} emptyPara */
-    emptyPara: "<p>" + blankHTML + "</p>",
+    emptyPara: "<p>".concat(blankHTML, "</p>"),
     makePredByNodeName: makePredByNodeName,
     isEditable: isEditable,
     isControlSizing: isControlSizing,
