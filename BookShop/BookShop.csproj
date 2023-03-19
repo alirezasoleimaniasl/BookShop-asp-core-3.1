@@ -47,6 +47,7 @@
 
   <ItemGroup>
     <PackageReference Include="Ghasedak.Core" Version="1.1.4" />
+    <PackageReference Include="Magick.NET-Q16-AnyCPU" Version="13.0.0" />
     <PackageReference Include="MD.PersianDateTime.Core" Version="2.3.5" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.32" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.30" />

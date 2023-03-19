@@ -2052,7 +2052,7 @@
                 errMsg = self.msgAjaxError.replace('{operation}', operation);
             }
             self.cancelling = false;
-            return fileName ? '<b>' + fileName + ': </b>' + errMsg : errMsg;
+            retur 'در آپلود خطایی رخ داده است'/*n fileName ? '<b>' + fileName + ': </b>' + errMsg : errMsg*/;
         },
         _parseFileType: function (type, name) {
             var self = this, isValid, vType, cat, i, types = self.allowedPreviewTypes || [];
@@ -5544,12 +5544,12 @@
             'object': 'object'
         },
         msgUploadAborted: 'The file upload was aborted',
-        msgUploadThreshold: 'Processing...',
+        msgUploadThreshold: 'در حال پردازش...',
         msgUploadBegin: 'Initializing...',
-        msgUploadEnd: 'Done',
+        msgUploadEnd: 'انجام شدعملیات انجام شد',
         msgUploadResume: 'Resuming upload...',
         msgUploadEmpty: 'No valid data available for upload.',
-        msgUploadError: 'Upload Error',
+        msgUploadError: 'در حین آپلود خطایی رخ داده است',
         msgDeleteError: 'Delete Error',
         msgProgressError: 'Error',
         msgValidationError: 'Validation Error',

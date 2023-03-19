@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using ImageMagick;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -22,29 +23,72 @@ namespace BookShop.Areas.Admin.Controllers
             return View();
         }
         [HttpPost]
+        [Route("Upload")]
         public async Task<IActionResult> Upload(IEnumerable<IFormFile> files /*same name with input name*/)
         {
-            foreach(var item in files)
+            try
             {
-                var UploadsRootFolder = Path.Combine(_env.WebRootPath, "GalleryFiles");
-                if(!Directory.Exists( UploadsRootFolder ) )
+                foreach (var item in files)
                 {
-                    Directory.CreateDirectory(UploadsRootFolder);
-                }
-                if(item != null)
-                {
-                    string FileExtension = Path.GetExtension(item.FileName);
-                    string NewFileName = string.Concat(Guid.NewGuid(), FileExtension);
-                    string path = Path.Combine(UploadsRootFolder, NewFileName);
-
-                    using (var stream = new FileStream(path, FileMode.Create))
+                    var UploadsRootFolder = Path.Combine(_env.WebRootPath, "GalleryFiles");
+                    if (!Directory.Exists(UploadsRootFolder))
                     {
-                        await item.CopyToAsync(stream);
+                        Directory.CreateDirectory(UploadsRootFolder);
+                    }
+                    if (item != null)
+                    {
+                        string FileExtension = Path.GetExtension(item.FileName);
+                        string NewFileName = string.Concat(Guid.NewGuid(), FileExtension);
+                        string path = Path.Combine(UploadsRootFolder, NewFileName);
+
+                        using (var stream = new FileStream(path, FileMode.Create))
+                        {
+                            await item.CopyToAsync(stream);
+                        }
+                        CompressImage(path);
                     }
                 }
+                //ViewBag.Alert = "عملیات آپلود با موفقیت انجام شد";
+                //return View();
+                return new JsonResult("success");
             }
-            ViewBag.Alert = "عملیات آپلود با موفقیت انجام شد";
+            catch
+            {
+                return new EmptyResult();
+            }
+            
+        }
+
+        public IActionResult ImageProcess()
+        {
+            var PathFolder = $"{_env.WebRootPath}/images/";
+            using (var Image = new MagickImage(PathFolder + "avatar-1.png"))
+            {
+                //Image.Resize(300,300);
+                Image.Quality = 30;
+                Image.Write(PathFolder + "output-image-quality.png");
+                CompressImage(PathFolder + "output-image-quality.png");
+            }
             return View();
+        }
+
+        public void CompressImage(string path)
+        {
+            var Image = new FileInfo(path);
+            var Optimizer = new ImageOptimizer();
+            Optimizer.Compress(Image);
+            Image.Refresh();
+        }
+
+        public IActionResult SaveImage2Pdf()
+        {
+            var FolderPath = $"{_env.WebRootPath}/images/";
+            using (var Image = new MagickImage(FolderPath + "logo-header.png"))
+            {
+                Image.Write(FolderPath + "PdfImage.pdf");
+            }
+            var FileStream = new FileStream(FolderPath + "PdfImage.pdf", FileMode.Open, FileAccess.Read);
+            return new FileStreamResult(FileStream, "application/pdf");
         }
     }
 }
