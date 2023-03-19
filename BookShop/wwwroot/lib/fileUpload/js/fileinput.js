@@ -5505,7 +5505,7 @@
         fileSingle: 'file',
         filePlural: 'files',
         browseLabel: 'Browse &hellip;',
-        removeLabel: 'Remove',
+        removeLabel: 'حذف کردن',
         removeTitle: 'Clear all unprocessed files',
         cancelLabel: 'لغو',
         cancelTitle: 'Abort ongoing upload',
@@ -5520,7 +5520,7 @@
         msgPlaceholder: 'Select {files}...',
         msgZoomModalHeading: 'جزئیات پیش نمایش',
 
-        msgFileRequired: 'You must select a file to upload.',
+        msgFileRequired: 'ابتدا بایستی یک فایل را جهت آپلود انتخاب نمایید',
         msgSizeTooSmall: 'File "{name}" (<b>{size} KB</b>) is too small and must be larger than <b>{minSize} KB</b>.',
         msgSizeTooLarge: 'حداکثر حجم مجاز آپلود <b>{maxSize} کیلوبایت</b> می باشد و قادر به آپلود فایل "{name}" نیست.',
         msgFilesTooLess: 'شما باید حداقل <b>{n}</b> فایل را آپلود کنید.',
