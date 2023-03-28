@@ -2052,7 +2052,7 @@
                 errMsg = self.msgAjaxError.replace('{operation}', operation);
             }
             self.cancelling = false;
-            retur 'در آپلود خطایی رخ داده است'/*n fileName ? '<b>' + fileName + ': </b>' + errMsg : errMsg*/;
+            return 'در آپلود فایل خطایی رخ داده است.';
         },
         _parseFileType: function (type, name) {
             var self = this, isValid, vType, cat, i, types = self.allowedPreviewTypes || [];
@@ -3246,7 +3246,7 @@
                 }, self.processDelay);
             };
             fnError = function (jqXHR, textStatus, errorThrown) {
-                errMsg = self._parseError(op, jqXHR, errorThrown, self.fileManager.getFileName(id));
+                //errMsg = self._parseError(op, jqXHR, errorThrown, self.fileManager.getFileName(id));
                 uploadFailed = true;
                 setTimeout(function () {
                     if (isBatch) {
@@ -3260,7 +3260,7 @@
                     $.extend(true, params, self._getOutData(formdata, jqXHR));
                     self._setProgress(101, $prog, self.msgAjaxProgressError.replace('{operation}', op));
                     self._setProgress(101, $thumb.find('.file-thumb-progress'), self.msgUploadError);
-                    self._showFileError(errMsg, params);
+                    //self._showFileError(errMsg, params);
                 }, self.processDelay);
             };
             formdata.append(self.uploadFileAttr, fileObj.file, fileName);
@@ -5505,13 +5505,13 @@
         fileSingle: 'file',
         filePlural: 'files',
         browseLabel: 'Browse &hellip;',
-        removeLabel: 'حذف کردن',
+        removeLabel: 'Remove',
         removeTitle: 'Clear all unprocessed files',
-        cancelLabel: 'لغو',
+        cancelLabel: 'Cancel',
         cancelTitle: 'Abort ongoing upload',
-        pauseLabel: 'مکث',
+        pauseLabel: 'Pause',
         pauseTitle: 'Pause ongoing upload',
-        uploadLabel: 'آپلود',
+        uploadLabel: 'Upload',
         uploadTitle: 'Upload selected files',
         msgNo: 'No',
         msgNoFilesSelected: 'No files selected',
@@ -5520,7 +5520,7 @@
         msgPlaceholder: 'Select {files}...',
         msgZoomModalHeading: 'جزئیات پیش نمایش',
 
-        msgFileRequired: 'ابتدا بایستی یک فایل را جهت آپلود انتخاب نمایید',
+        msgFileRequired: 'You must select a file to upload.',
         msgSizeTooSmall: 'File "{name}" (<b>{size} KB</b>) is too small and must be larger than <b>{minSize} KB</b>.',
         msgSizeTooLarge: 'حداکثر حجم مجاز آپلود <b>{maxSize} کیلوبایت</b> می باشد و قادر به آپلود فایل "{name}" نیست.',
         msgFilesTooLess: 'شما باید حداقل <b>{n}</b> فایل را آپلود کنید.',
@@ -5544,12 +5544,12 @@
             'object': 'object'
         },
         msgUploadAborted: 'The file upload was aborted',
-        msgUploadThreshold: 'در حال پردازش...',
+        msgUploadThreshold: 'در حال پردازش ...',
         msgUploadBegin: 'Initializing...',
-        msgUploadEnd: 'انجام شدعملیات انجام شد',
+        msgUploadEnd: 'عملیات انجام شد.',
         msgUploadResume: 'Resuming upload...',
         msgUploadEmpty: 'No valid data available for upload.',
-        msgUploadError: 'در حین آپلود خطایی رخ داده است',
+        msgUploadError: 'در آپلود فایل خطایی رخ داده است.',
         msgDeleteError: 'Delete Error',
         msgProgressError: 'Error',
         msgValidationError: 'Validation Error',

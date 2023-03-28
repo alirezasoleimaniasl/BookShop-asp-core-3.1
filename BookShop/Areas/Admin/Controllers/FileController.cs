@@ -45,7 +45,7 @@ namespace BookShop.Areas.Admin.Controllers
                         {
                             await item.CopyToAsync(stream);
                         }
-                        CompressImage(path);
+                        CompressImage(NewFileName);
                     }
                 }
                 //ViewBag.Alert = "عملیات آپلود با موفقیت انجام شد";

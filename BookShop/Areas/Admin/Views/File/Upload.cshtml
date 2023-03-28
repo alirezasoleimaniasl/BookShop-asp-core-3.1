@@ -24,6 +24,7 @@
         }
 
         <form asp-action="Upload" enctype="multipart/form-data">
+            <input type="hidden" value="8" id="GalleryID" name="GalleryID" />
             <div class="file-loading">
                 <input id="kv-explorer" name="files" type="file" multiple>
             </div>
@@ -68,6 +69,11 @@
             //    img_key: "1000",
             //    img_keywords: "happy, places",
             //}
+            uploadExtraData: function () {
+                return {
+                    GalleryID: $("#GalleryID").val(),
+                };
+            }
         });
     });
 </script>

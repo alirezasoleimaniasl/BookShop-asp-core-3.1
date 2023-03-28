@@ -102,22 +102,38 @@ namespace BookShop.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
+                bool result = true;
                 if(ViewModel.File != null)
                 {
                     string FileName = ViewModel.File.FileName;
                     string FileExtension = Path.GetExtension(FileName);
-                    string NewFileName = String.Concat(Guid.NewGuid().ToString(), FileExtension);
-                    var path = $"{_env.WebRootPath}/BookFiles/{NewFileName}";
-                    using (var stream = new FileStream(path, FileMode.Create))
+                    var types = FileExtensions.FileType.PDF;
+                    using(var memory = new MemoryStream())
                     {
-                        await ViewModel.File.CopyToAsync(stream);
+                        await ViewModel.File.CopyToAsync(memory);
+                        result = FileExtensions.IsValidFile(memory.ToArray(), types, FileExtension.Replace('.', ' '));
+                        if (result)
+                        {
+                            string NewFileName = String.Concat(Guid.NewGuid().ToString());
+                            var path = $"{_env.WebRootPath}/BookFiles/{NewFileName}";
+                            using (var stream = new FileStream(path, FileMode.Create))
+                            {
+                                await ViewModel.File.CopyToAsync(stream);
+                            }
+                            ViewModel.FileName = NewFileName;
+                        }
+                        else
+                            ModelState.AddModelError(string.Empty, "فایل انتخاب شده معتبر نمی باشد");
                     }
-                    ViewModel.FileName = NewFileName;
                 }
-                if (await _UW.BookRepository.CreateBookAsync(ViewModel))
-                    return RedirectToAction("Index");
-                else
-                    ViewBag.Error = "در انجام عملیات خطایی رخ داده است";
+                if (result)
+                {
+                    if (await _UW.BookRepository.CreateBookAsync(ViewModel))
+                        return RedirectToAction("Index");
+                    else
+                        ViewBag.Error = "در انجام عملیات خطایی رخ داده است";
+                }
+                
             }
             ViewBag.LanguageID = new SelectList(_UW.BaseRepository<Language>().FindAll(), "LanguageID", "LanguageName");
             ViewBag.PublisherID = new SelectList(_UW.BaseRepository<Publisher>().FindAll(), "PublisherID", "PublisherName");
