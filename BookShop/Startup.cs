@@ -6,6 +6,7 @@ using BookShop.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.Extensions.Configuration;
@@ -76,6 +77,11 @@ namespace BookShop
                     new HeaderApiVersionReader("api-key"));
 
                 //option.Conventions.Controller<SampleV1Controller>().HasApiVersion(new ApiVersion(1, 0));//Define version of Api for specific controller
+            });
+            services.Configure<FormOptions> (options =>
+            {
+                options.ValueLengthLimit = int.MaxValue;
+                options.MultipartBodyLengthLimit = long.MaxValue;
             });
             services.ConfigureApplicationCookie(options =>
             {

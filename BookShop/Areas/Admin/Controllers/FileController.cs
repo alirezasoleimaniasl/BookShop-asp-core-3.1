@@ -1,4 +1,5 @@
-﻿using ImageMagick;
+﻿using BookShop.Models.ViewModels;
+using ImageMagick;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -24,7 +25,7 @@ namespace BookShop.Areas.Admin.Controllers
         }
         [HttpPost]
         [Route("Upload")]
-        public async Task<IActionResult> Upload(IEnumerable<IFormFile> files /*same name with input name*/)
+        public async Task<IActionResult> Upload(IEnumerable<IFormFile> files, string GalleryID /*same name with input name*/)
         {
             try
             {
@@ -57,6 +58,21 @@ namespace BookShop.Areas.Admin.Controllers
                 return new EmptyResult();
             }
             
+        }
+
+        [HttpGet]
+        public IActionResult UploadLargeFile()
+        {
+            return View();
+        }
+        [HttpPost,ValidateAntiForgeryToken]
+        public IActionResult UploadLargeFile(UploadLargeFile ViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                //upload file
+            }
+            return View();
         }
 
         public IActionResult ImageProcess()
