@@ -1,6 +1,7 @@
 ﻿using BookShop.Classes;
 using BookShop.Models.UnitOfWork;
 using BookShop.Models.ViewModels;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -323,6 +324,43 @@ namespace BookShop.Models.Repository
             {
                 return false;
             }
+        }
+
+        public async Task<UploadFileResult> UploadFileAsync(IFormFile file,string path)
+        {
+            string FileExtension = Path.GetExtension(file.FileName);
+            var types = FileExtensions.FileType.PDF;
+            bool result = true;
+            using (var memory = new MemoryStream())
+            {
+                await file.CopyToAsync(memory);
+                result = FileExtensions.IsValidFile(memory.ToArray(), types, FileExtension.Replace('.', ' '));
+                if (result)
+                {
+                    using (var stream = new FileStream(path, FileMode.Create))
+                    {
+                        await file.CopyToAsync(stream);
+                    }
+                    return new UploadFileResult(true, null);
+                }
+                else
+                    return new UploadFileResult(false,new List<string>() {"فایل انتخاب شده معتبر نمی باشد" });
+                    
+            }
+        }
+
+        public string CheckFileName(string fileName)
+        {
+            string FileExtension = Path.GetExtension(fileName);
+            int FileNameCount = _UW.BaseRepository<Book>().FindByConditionAsync(f => f.File == fileName).Result.Count();
+            int j = 1;
+            while (FileNameCount != 0)
+            {
+                fileName = fileName.Replace(FileExtension, "") + j + FileExtension;
+                FileNameCount = _UW.BaseRepository<Book>().FindByConditionAsync(f => f.File == fileName).Result.Count();
+                j++;
+            }
+            return fileName;
         }
     }
 
