@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.Extensions.Hosting;
 using ReflectionIT.Mvc.Paging;
 using System;
 using System.IO;
@@ -135,7 +136,7 @@ namespace BookShop
             app.UseAuthorization();
             app.UseSession();
             app.UseSwaggerAndUI();
-
+            
 
             //app.UseEndpoints(endpoints =>
             //{

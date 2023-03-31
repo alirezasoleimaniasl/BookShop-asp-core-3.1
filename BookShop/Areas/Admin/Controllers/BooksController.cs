@@ -4,6 +4,7 @@ using BookShop.Models;
 using BookShop.Models.Repository;
 using BookShop.Models.UnitOfWork;
 using BookShop.Models.ViewModels;
+using Ghasedak.Core.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -102,7 +103,7 @@ namespace BookShop.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                UploadFileResult result = null;
+                UploadFileResult result = new UploadFileResult();
                 string NewFileName = null;
                 if(ViewModel.File != null)
                 {
@@ -110,7 +111,7 @@ namespace BookShop.Areas.Admin.Controllers
                     var path = $"{_env.WebRootPath}/BookFiles/{NewFileName}";
                     result = result = await _UW.BookRepository.UploadFileAsync(ViewModel.File, path);
                 }
-                if (result.IsSuccess == true || result == null)
+                if (result.IsSuccess == true || result.IsSuccess == null)
                 {
                     ViewModel.FileName = NewFileName;
                     if (await _UW.BookRepository.CreateBookAsync(ViewModel))
@@ -206,7 +207,8 @@ namespace BookShop.Areas.Admin.Controllers
                                          Weight = b.Weight,
                                          RecentIsPublish = (bool)b.IsPublish,
                                          PublishDate = b.PublishDate,
-                                         ImageByte =b.Image,
+                                         ImageByte = b.Image,
+                                         FileName = b.File,
 
                                      }).FirstAsync();
 
@@ -248,14 +250,41 @@ namespace BookShop.Areas.Admin.Controllers
             ViewModel.SubCategoriesVM = new BooksSubCategoriesViewModel(_UW.BookRepository.GetAllCategories(), ViewModel.CategoryID);
             if (ModelState.IsValid)
             {
-                if(await _UW.BookRepository.EditBookAsync(ViewModel))
+                UploadFileResult result = new UploadFileResult();
+                string NewFileName = ViewModel.FileName;
+                string path;
+                if (ViewModel.File != null)
                 {
-                    ViewBag.MsgSuccess = "ذخیره تغییرات با موفقیت انجام شد";
-                    return View(ViewModel);
+                    NewFileName = _UW.BookRepository.CheckFileName(ViewModel.File.FileName);
+                    path = $"{_env.WebRootPath}/BookFiles/{NewFileName}";
+                    result = result = await _UW.BookRepository.UploadFileAsync(ViewModel.File, path);
+                }
+                if (result.IsSuccess == true || result.IsSuccess == null)
+                {
+                    if (result.IsSuccess == true)
+                    {
+                        path = $"{_env.WebRootPath}/BookFiles/{ViewModel.FileName}";
+                        if (System.IO.File.Exists(path))
+                        {
+                            System.IO.File.Delete(path);
+                        }
+                    }
+                    ViewModel.FileName = NewFileName;
+                    if (await _UW.BookRepository.EditBookAsync(ViewModel))
+                    {
+                        ViewBag.MsgSuccess = "ذخیره تغییرات با موفقیت انجام شد";
+                        return View(ViewModel);
+                    }
+                    else
+                    {
+                        ViewBag.MsgSuccess = "در ذخیره تغییرات خطایی رخ داد";
+                        return View(ViewModel);
+                    }
                 }
                 else
                 {
-                    ViewBag.MsgSuccess = "در ذخیره تغییرات خطایی رخ داد";
+                    foreach (var item in result.Errors)
+                        ModelState.AddModelError("", item);
                     return View(ViewModel);
                 }
             }

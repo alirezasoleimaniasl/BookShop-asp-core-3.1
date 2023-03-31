@@ -255,6 +255,7 @@ namespace BookShop.Models.Repository
                     Summary = ViewModel.Summary,
                     Weight = ViewModel.Weight,
                     PublishDate = PublishDate,
+                    File = ViewModel.FileName,
                     Delete = false,
                 };
                 _UW.BaseRepository<Book>().Update(book);
