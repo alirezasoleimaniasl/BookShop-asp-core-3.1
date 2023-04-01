@@ -26,6 +26,7 @@
             </button>
         </div>
     }
+    
     <form asp-action="Edit" enctype="multipart/form-data">
         <input type="hidden" asp-for="FileName"/>
         <div class="row">
@@ -37,7 +38,7 @@
                                 ویرایش تصویر جلد کتاب
                             </div>
                             <div class="card-body">
-                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                
                                 <div class="form-group">
                                     <div class="col-md-12 text-center">
                                         <div class="fileinput fileinput-new" data-provides="fileinput">
@@ -110,10 +111,10 @@
                        ویرایش اطلاعات کتاب
                     </div>
                     <div class="card-body">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                         <div class="col-md-12">
                             <div class="row">
                                 <input type="hidden" asp-for="BookID" />
-                                <input type="hidden" asp-for="RecentIsPublish" />
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="form-control-label" asp-for="Title"></label>

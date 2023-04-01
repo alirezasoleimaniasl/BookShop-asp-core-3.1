@@ -4,9 +4,12 @@ using BookShop.Models.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Security.Policy;
 using System.Threading.Tasks;
 
 namespace BookShop.Models.Repository
@@ -221,94 +224,96 @@ namespace BookShop.Models.Repository
             }
         }
         
-        public async Task<bool> EditBookAsync(BooksCreateEditViewModel ViewModel)
+        public async Task<EntityOperationResult> EditBookAsync(BooksCreateEditViewModel ViewModel)
         {
             try
             {
-                DateTime? PublishDate;
-                if (ViewModel.IsPublish == true && ViewModel.RecentIsPublish == false)
+                var Book = await _UW.BaseRepository<Book>().FindByIdAsync(ViewModel.BookID);
+                if(Book != null)
                 {
-                    PublishDate = DateTime.Now;
-                }
-                else if (ViewModel.RecentIsPublish == true && ViewModel.IsPublish == false)
-                {
-                    PublishDate = null;
-                }
+                    DateTime? PublishDate;
+                    if (ViewModel.IsPublish == true && Book.IsPublish == false)
+                    {
+                        PublishDate = DateTime.Now;
+                    }
+                    else if (Book.IsPublish == true && ViewModel.IsPublish == false)
+                    {
+                        PublishDate = null;
+                    }
+                    else
+                    {
+                        PublishDate = ViewModel.PublishDate;
+                    }
+                    Book.BookID = ViewModel.BookID;
+                    Book.BookID = ViewModel.BookID;
+                    Book.Title = ViewModel.Title;
+                    Book.ISBN = ViewModel.ISBN;
+                    Book.NumOfPages = ViewModel.NumOfPages;
+                    Book.Price = ViewModel.Price;
+                    Book.Stock = ViewModel.Stock;
+                    Book.IsPublish = ViewModel.IsPublish;
+                    Book.LanguageID = ViewModel.LanguageID;
+                    Book.PublisherID = ViewModel.PublisherID;
+                    Book.PublishYear = ViewModel.PublishYear;
+                    Book.Summary = ViewModel.Summary;
+                    Book.Weight = ViewModel.Weight;
+                    if (ViewModel.PublishDate == null && ViewModel.IsPublish == true)
+                        Book.PublishDate = DateTime.Now;
+                    Book.File = ViewModel.FileName;
+                    Book.Delete = false;
 
-                else
-                {
-                    PublishDate = ViewModel.PublishDate;
-                }
-
-                Book book = new Book
-                {
-                    BookID = ViewModel.BookID,
-                    Title = ViewModel.Title,
-                    ISBN = ViewModel.ISBN,
-                    NumOfPages = ViewModel.NumOfPages,
-                    Price = ViewModel.Price,
-                    Stock = ViewModel.Stock,
-                    IsPublish = ViewModel.IsPublish,
-                    LanguageID = ViewModel.LanguageID,
-                    PublisherID = ViewModel.PublisherID,
-                    PublishYear = ViewModel.PublishYear,
-                    Summary = ViewModel.Summary,
-                    Weight = ViewModel.Weight,
-                    PublishDate = PublishDate,
-                    File = ViewModel.FileName,
-                    Delete = false,
-                };
-                _UW.BaseRepository<Book>().Update(book);
-
-                var RecentAuthors = (from a in _UW._Context.Author_Books
-                                     where (a.BookID == ViewModel.BookID)
-                                     select a.AuthorID).ToArray();
-
-                var RecentTranslators = (from a in _UW._Context.Book_Translators
+                    var RecentAuthors = (from a in _UW._Context.Author_Books
                                          where (a.BookID == ViewModel.BookID)
-                                         select a.TranslatorID).ToArray();
+                                         select a.AuthorID).ToArray();
 
-                var RecentCategories = (from c in _UW._Context.Book_Categories
-                                        where (c.BookID == ViewModel.BookID)
-                                        select c.CategoryID).ToArray();
+                    var RecentTranslators = (from a in _UW._Context.Book_Translators
+                                             where (a.BookID == ViewModel.BookID)
+                                             select a.TranslatorID).ToArray();
 
-                if (ViewModel.TranslatorID == null)
-                    ViewModel.TranslatorID = new int[] { };
-                if (ViewModel.CategoryID == null)
-                    ViewModel.CategoryID = new int[] { };
-                var DeletedAuthors = RecentAuthors.Except(ViewModel.AuthorID);
-                var DeletedTranslators = RecentTranslators.Except(ViewModel.TranslatorID);
-                var DeletedCategories = RecentCategories.Except(ViewModel.CategoryID);
+                    var RecentCategories = (from c in _UW._Context.Book_Categories
+                                            where (c.BookID == ViewModel.BookID)
+                                            select c.CategoryID).ToArray();
 
-                var AddedAuthors = ViewModel.AuthorID.Except(RecentAuthors);
-                var AddedTranslators = ViewModel.TranslatorID.Except(RecentTranslators);
-                var AddedCategories = ViewModel.CategoryID.Except(RecentCategories);
+                    if (ViewModel.TranslatorID == null)
+                        ViewModel.TranslatorID = new int[] { };
+                    if (ViewModel.CategoryID == null)
+                        ViewModel.CategoryID = new int[] { };
+                    var DeletedAuthors = RecentAuthors.Except(ViewModel.AuthorID);
+                    var DeletedTranslators = RecentTranslators.Except(ViewModel.TranslatorID);
+                    var DeletedCategories = RecentCategories.Except(ViewModel.CategoryID);
 
-                if (DeletedAuthors.Count() != 0)
-                    _UW.BaseRepository<Author_Book>().DeleteRange(DeletedAuthors.Select(a => new Author_Book { AuthorID = a, BookID = ViewModel.BookID }).ToList());
+                    var AddedAuthors = ViewModel.AuthorID.Except(RecentAuthors);
+                    var AddedTranslators = ViewModel.TranslatorID.Except(RecentTranslators);
+                    var AddedCategories = ViewModel.CategoryID.Except(RecentCategories);
 
-                if (DeletedTranslators.Count() != 0)
-                    _UW.BaseRepository<Book_Translator>().DeleteRange(DeletedTranslators.Select(a => new Book_Translator { TranslatorID = a, BookID = ViewModel.BookID }).ToList());
+                    if (DeletedAuthors.Count() != 0)
+                        _UW.BaseRepository<Author_Book>().DeleteRange(DeletedAuthors.Select(a => new Author_Book { AuthorID = a, BookID = ViewModel.BookID }).ToList());
 
-                if (DeletedCategories.Count() != 0)
-                    _UW.BaseRepository<Book_Category>().DeleteRange(DeletedCategories.Select(a => new Book_Category { CategoryID = a, BookID = ViewModel.BookID }).ToList());
+                    if (DeletedTranslators.Count() != 0)
+                        _UW.BaseRepository<Book_Translator>().DeleteRange(DeletedTranslators.Select(a => new Book_Translator { TranslatorID = a, BookID = ViewModel.BookID }).ToList());
 
-                if (AddedAuthors.Count() != 0)
-                    await _UW.BaseRepository<Author_Book>().CreateRange(AddedAuthors.Select(a => new Author_Book { AuthorID = a, BookID = ViewModel.BookID }).ToList());
+                    if (DeletedCategories.Count() != 0)
+                        _UW.BaseRepository<Book_Category>().DeleteRange(DeletedCategories.Select(a => new Book_Category { CategoryID = a, BookID = ViewModel.BookID }).ToList());
 
-                if (AddedTranslators.Count() != 0)
-                    await _UW.BaseRepository<Book_Translator>().CreateRange(AddedTranslators.Select(a => new Book_Translator { TranslatorID = a, BookID = ViewModel.BookID }).ToList());
+                    if (AddedAuthors.Count() != 0)
+                        await _UW.BaseRepository<Author_Book>().CreateRange(AddedAuthors.Select(a => new Author_Book { AuthorID = a, BookID = ViewModel.BookID }).ToList());
 
-                if (AddedCategories.Count() != 0)
-                    await _UW.BaseRepository<Book_Category>().CreateRange(AddedCategories.Select(a => new Book_Category { CategoryID = a, BookID = ViewModel.BookID }).ToList());
+                    if (AddedTranslators.Count() != 0)
+                        await _UW.BaseRepository<Book_Translator>().CreateRange(AddedTranslators.Select(a => new Book_Translator { TranslatorID = a, BookID = ViewModel.BookID }).ToList());
 
-                await _UW.Commit();
+                    if (AddedCategories.Count() != 0)
+                        await _UW.BaseRepository<Book_Category>().CreateRange(AddedCategories.Select(a => new Book_Category { CategoryID = a, BookID = ViewModel.BookID }).ToList());
 
-                return true;
+                    await _UW.Commit();
+                    return new EntityOperationResult(true,null);
+                }
+                else
+                    return new EntityOperationResult(false, new List<string>() { "کتابی یافت نشد" });
             }
-            catch
+            catch(Exception ex)
             {
-                return false;
+                //return new EntityOperationResult(false,new List<string>() { ex.Message});
+                return new EntityOperationResult(false, new List<string>() { "در انجام عملیات خطایی رخ داده است" });
             }
         }
 

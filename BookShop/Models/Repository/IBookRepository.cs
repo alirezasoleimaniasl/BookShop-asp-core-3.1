@@ -13,7 +13,7 @@ namespace BookShop.Models.Repository
         void BindSubCategories(TreeViewCategory category);
         List<BooksIndexViewModel> GetAllBooks(string title, string ISBN, string Language, string Publisher, string Author, string Translator, string Category);
         Task<bool> CreateBookAsync(BooksCreateEditViewModel ViewModel);
-        Task<bool> EditBookAsync(BooksCreateEditViewModel ViewModel);
+        Task<EntityOperationResult> EditBookAsync(BooksCreateEditViewModel ViewModel);
         Task<bool> DeleteBookAsync(int id);
         Task<UploadFileResult> UploadFileAsync(IFormFile file, string path);
         string CheckFileName(string fileName);

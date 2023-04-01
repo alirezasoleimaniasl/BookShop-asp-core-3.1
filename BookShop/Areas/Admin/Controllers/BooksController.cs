@@ -205,7 +205,6 @@ namespace BookShop.Areas.Admin.Controllers
                                          PublishYear = b.PublishYear,
                                          Summary = b.Summary,
                                          Weight = b.Weight,
-                                         RecentIsPublish = (bool)b.IsPublish,
                                          PublishDate = b.PublishDate,
                                          ImageByte = b.Image,
                                          FileName = b.File,
@@ -269,15 +268,18 @@ namespace BookShop.Areas.Admin.Controllers
                             System.IO.File.Delete(path);
                         }
                     }
+
                     ViewModel.FileName = NewFileName;
-                    if (await _UW.BookRepository.EditBookAsync(ViewModel))
+                    var operationResult = await _UW.BookRepository.EditBookAsync(ViewModel);
+                    if (operationResult.IsSuccess == true)
                     {
                         ViewBag.MsgSuccess = "ذخیره تغییرات با موفقیت انجام شد";
                         return View(ViewModel);
                     }
                     else
                     {
-                        ViewBag.MsgSuccess = "در ذخیره تغییرات خطایی رخ داد";
+                        foreach(var item in operationResult.Errors)
+                            ModelState.AddModelError("", item);
                         return View(ViewModel);
                     }
                 }

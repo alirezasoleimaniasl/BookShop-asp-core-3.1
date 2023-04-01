@@ -32,7 +32,7 @@ namespace BookShop.Models.ViewModels
         [Display(Name = "عنوان ")]
         public string Title { get; set; }
 
-        public bool RecentIsPublish { get; set; }
+        //public bool RecentIsPublish { get; set; }
 
         [Display(Name = "خلاصه")]
         public string Summary { get; set; }
