@@ -156,7 +156,6 @@ namespace BookShop.Models.ViewModels
         public DateTime? LastVisit { get; set; }
         public string Image { get; set; }
     }
-
     public class LoginWith2faViewModel
     {
         [Required(ErrorMessage = "وارد نمودن {0} الزامی است.")]
@@ -170,12 +169,26 @@ namespace BookShop.Models.ViewModels
         [Display(Name = "مرا به خاطر بسپار؟")]
         public bool RememberMachine { get; set; }
     }
-
     public class LoginWithRecoveryCodeViewModel
     {
         [Required(ErrorMessage = "وارد نمودن {0} الزامی است.")]
         [DataType(DataType.Text)]
         [Display(Name = "کد بازیابی")]
         public string RecoveryCode { get; set; }
+    }
+    public class ProfileViewModel
+    {
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public DateTime? BirthDate { get; set; }
+        public string Email { get; set; }
+        public string PhoneNumber { get; set; }
+
+        [Display(Name = "استان")]
+        public int ProvinceID { get; set; }
+
+        [Display(Name = "شهر")]
+        public int CityID { get; set; }
+        public UserSidebarViewModel UserSidebar { get; set; }
     }
 }

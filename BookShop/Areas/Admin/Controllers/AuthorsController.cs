@@ -60,7 +60,7 @@ namespace BookShop.Areas.Admin.Controllers
         // GET: Admin/Authors/Create
         public IActionResult Create()
         {
-            return View();
+            return PartialView("_Create");
         }
 
         // POST: Admin/Authors/Create
@@ -76,9 +76,9 @@ namespace BookShop.Areas.Admin.Controllers
                 await _UW.BaseRepository<Author>().Create(author);
                 //await _context.SaveChangesAsync();
                 await _UW.Commit();
-                return RedirectToAction(nameof(Index));
+                //return RedirectToAction(nameof(Index));
             }
-            return View(author);
+            return PartialView("_Create",author);
         }
 
         // GET: Admin/Authors/Edit/5

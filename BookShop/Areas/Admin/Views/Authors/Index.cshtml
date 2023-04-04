@@ -16,9 +16,14 @@
         <span>Entity Name: @item.EntityName </span><span> Entity State: @item.EntityState</span>
         <br/>
     }*@
+<div id="modal-placeholder">
 
+</div>
 <p>
-    <a asp-action="Create" class="btn btn-primary btn-icon">افزودن نویسنده جدید</a>
+    @*<a asp-action="Create" class="btn btn-primary btn-icon">افزودن نویسنده جدید</a>*@
+    <button class="btn btn-info btn-icon" data-toggle="ajax-modal" data-url="@Url.Action("Create")">
+        <i class="fa fa-plus text-white"></i>افزودن نویسنده جدید
+    </button>
 </p>
 <div class="row">
     <div class="col-md-12">
