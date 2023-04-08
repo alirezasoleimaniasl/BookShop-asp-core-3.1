@@ -17,7 +17,7 @@ namespace BookShop.Areas.Admin.Controllers
     public class AuthorsController : Controller
     {
         private readonly IUnitOfWork _UW;
-
+        private readonly string NotFoundAuthor = "نویسنده با این مشخصات یافت نشد!!!";
         public AuthorsController(IUnitOfWork UW)
         {
             _UW = UW;
@@ -26,15 +26,16 @@ namespace BookShop.Areas.Admin.Controllers
         // GET: Admin/Authors
         public async Task<IActionResult> Index(int page = 1, int row = 10, string sortExpression = "FirstName", string firstName = "")
         {
-            //var Authors = await _context.Authors.ToListAsync();
             var Authors = _UW.BaseRepository<Author>().FindAllAsync();
             var PagingModel = PagingList.Create(await Authors, row, page,sortExpression,"FirstName");
-            //ViewBag.EntityStates = DisplayStates(_context.ChangeTracker.Entries());
             PagingModel.RouteValue = new RouteValueDictionary
             {
                 {"row",row},
                 {"FirstName",firstName}
             };
+            var isAjax = Request.Headers["X-Requested-With"] == "XMLHttpRequest";
+            if (isAjax)
+                return PartialView("_AuthorsTable",PagingModel);
             return View(PagingModel);
         }
 
@@ -72,11 +73,9 @@ namespace BookShop.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                //_context.Add(author);
                 await _UW.BaseRepository<Author>().Create(author);
-                //await _context.SaveChangesAsync();
                 await _UW.Commit();
-                //return RedirectToAction(nameof(Index));
+                TempData["notification"] = "درج اطلاعات با موفقیت انجام شد";
             }
             return PartialView("_Create",author);
         }
@@ -86,16 +85,18 @@ namespace BookShop.Areas.Admin.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                //return NotFound();
+                ModelState.AddModelError(string.Empty, NotFoundAuthor);
             }
 
             //var author = await _context.Authors.FindAsync(id);
             var author = await _UW.BaseRepository<Author>().FindByIdAsync(id);
             if (author == null)
             {
-                return NotFound();
+                //return NotFound();
+                ModelState.AddModelError(string.Empty, NotFoundAuthor);
             }
-            return View(author);
+            return PartialView("_Edit", author);
         }
 
         // POST: Admin/Authors/Edit/5
@@ -130,9 +131,10 @@ namespace BookShop.Areas.Admin.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                //return RedirectToAction(nameof(Index));
+                TempData["notification"] = "ویرایش اطلاعات با موفقیت انجام شد";
             }
-            return View(author);
+            return PartialView("_Edit", author);
         }
 
         // GET: Admin/Authors/Delete/5
@@ -151,13 +153,13 @@ namespace BookShop.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            return View(author);
+            return PartialView("_Delete",author);
         }
 
         // POST: Admin/Authors/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int? id)
         {
             //var author = await _context.Authors.FindAsync(id);
             var author = await _UW.BaseRepository<Author>().FindByIdAsync(id);
@@ -170,8 +172,10 @@ namespace BookShop.Areas.Admin.Controllers
                 //_context.Authors.Remove(author);
                 _UW.BaseRepository<Author>().Delete(author);
                 await _UW.Commit();
-                return RedirectToAction(nameof(Index));
+                //return RedirectToAction(nameof(Index));
+                TempData["notification"] = "حذف اطلاعات با موفقیت انجام شد";
             }
+            return PartialView("_Delete",author);
         }
 
         private List<EntityStates> DisplayStates(IEnumerable<EntityEntry> entities)
@@ -202,6 +206,11 @@ namespace BookShop.Areas.Admin.Controllers
                 return View(await Authors);
             }
             //return View();
+        }
+
+        public IActionResult Notification()
+        {
+            return PartialView("_Notification", TempData["notification"]);
         }
     }
 }

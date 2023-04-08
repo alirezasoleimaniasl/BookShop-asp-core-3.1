@@ -154,6 +154,9 @@
     <None Include="wwwroot\lib\fileUpload\themes\fa\theme.min.js" />
     <None Include="wwwroot\lib\fileUpload\themes\gly\theme.js" />
     <None Include="wwwroot\lib\fileUpload\themes\gly\theme.min.js" />
+    <None Include="wwwroot\lib\Loading\css\preloader.scss" />
+    <None Include="wwwroot\lib\Loading\js\jquery.preloader.js" />
+    <None Include="wwwroot\lib\Loading\js\jquery.preloader.min.js" />
     <None Include="wwwroot\lib\summernote\.editorconfig" />
     <None Include="wwwroot\lib\summernote\.eslintrc" />
     <None Include="wwwroot\lib\summernote\.github\CODE_OF_CONDUCT.md" />

@@ -94,8 +94,10 @@ namespace BookShop.Models
         [Key]
         public int TranslatorID { get; set; }
         [Display(Name = "نام")]
+        //[Required(ErrorMessage = "وارد نمودن {0} الزامی است.")]
         public string Name { get; set; }
         [Display(Name = "نام خانوادگی")]
+        //[Required(ErrorMessage = "وارد نمودن {0} الزامی است.")]
         public string Family { get; set; }
 
         public List<Book_Translator> book_Tranlators { get; set; }
@@ -135,11 +137,13 @@ namespace BookShop.Models
         {
             LazyLoader = lazyLoader;
         }
-        [Key]
+        [Key] 
         public int AuthorID { get; set; }
         [Display(Name ="نام")]
+        [Required(ErrorMessage = "وارد نمودن {0} الزامی است.")]
         public string FirstName { get; set; }
         [Display(Name = "نام خانوادگی")]
+        [Required(ErrorMessage = "وارد نمودن {0} الزامی است.")]
         public string LastName { get; set; }
 
         public List<Author_Book> Author_Books 
