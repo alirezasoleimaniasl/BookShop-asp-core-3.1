@@ -213,7 +213,7 @@ namespace BookShop.Models.Repository
                 }
                 //End - Save Image to Database
 
-                await _UW.BaseRepository<Book>().Create(book);
+                await _UW.BaseRepository<Book>().CreateAsync(book);
                 await _UW.Commit();
 
                 return true;

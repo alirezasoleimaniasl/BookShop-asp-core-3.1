@@ -72,7 +72,7 @@ namespace BookShop.Areas.Admin.Controllers
                 }
 
                 City City = new City() { CityID = RandomID, CityName = city.CityName, ProvinceID = city.ProvinceID };
-                await _UW.BaseRepository<City>().Create(City);
+                await _UW.BaseRepository<City>().CreateAsync(City);
                 await _UW.Commit();
                 return RedirectToAction(nameof(Index), new { id = city.ProvinceID });
             }

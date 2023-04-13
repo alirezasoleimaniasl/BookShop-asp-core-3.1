@@ -50,7 +50,7 @@ namespace BookShop.Models.Repository
             return await query.ToListAsync();
         }
         
-        public async Task Create(TEntity entity)
+        public async Task CreateAsync(TEntity entity)
         {
             await dbSet.AddAsync(entity);
         }

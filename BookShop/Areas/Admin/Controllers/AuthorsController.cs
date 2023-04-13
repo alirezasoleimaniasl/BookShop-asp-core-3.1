@@ -73,7 +73,7 @@ namespace BookShop.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _UW.BaseRepository<Author>().Create(author);
+                await _UW.BaseRepository<Author>().CreateAsync(author);
                 await _UW.Commit();
                 TempData["notification"] = "درج اطلاعات با موفقیت انجام شد";
             }

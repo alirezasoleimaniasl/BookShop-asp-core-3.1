@@ -54,7 +54,7 @@ namespace BookShop.Areas.Admin.Controllers
                 }
 
                 Province Province = new Province() { ProvinceID = RandomID, ProvinceName = province.ProvinceName };
-                await _UW.BaseRepository<Province>().Create(Province);
+                await _UW.BaseRepository<Province>().CreateAsync(Province);
                 await _UW.Commit();
                 return RedirectToAction(nameof(Index));
             }

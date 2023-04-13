@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using BookShop.Models;
 using BookShop.Models.UnitOfWork;
+using Newtonsoft.Json;
 
 namespace BookShop.Areas.Admin.Pages.Publishers
 {
@@ -32,6 +33,35 @@ namespace BookShop.Areas.Admin.Pages.Publishers
             Publishers = await _UW.BaseRepository<Publisher>().GetPaginateResultAsync(CurrentPage, PageSize);
 
             return Page();
+        }
+        public async Task<IActionResult> OnPostInsertAsync([FromBody]Publisher model)
+        {
+            await _UW.BaseRepository<Publisher>().CreateAsync(model);
+            await _UW.Commit();
+            return new JsonResult(JsonConvert.SerializeObject(await _UW.BaseRepository<Publisher>().GetPaginateResultAsync(CurrentPage, PageSize)));
+        }
+        public async Task<IActionResult> OnPostDeleteAsync(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            else
+            {
+                var Publisher = await _UW.BaseRepository<Publisher>().FindByIdAsync(id);
+                if (Publisher == null)
+                {
+                    return NotFound();
+                }
+
+                else
+                {
+                    _UW.BaseRepository<Publisher>().Delete(Publisher);
+                    await _UW.Commit();
+                    return RedirectToPage("./Index");
+                }
+            }
         }
     }
 }

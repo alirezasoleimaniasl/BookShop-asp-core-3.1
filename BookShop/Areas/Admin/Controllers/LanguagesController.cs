@@ -45,7 +45,7 @@ namespace BookShop.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _UW.BaseRepository<Language>().Create(language);
+                await _UW.BaseRepository<Language>().CreateAsync(language);
                 await _UW.Commit();
                 return RedirectToAction(nameof(Index));
             }

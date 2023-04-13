@@ -97,6 +97,7 @@ namespace BookShop
                 options.HtmlIndicatorDown ="<i class='fa fa-sort-amount-up'></i>";
                 options.HtmlIndicatorUp = "<i class='fa fa-sort-amount-down'></i>";
             });
+            services.AddAntiforgery(o => o.HeaderName = "XSRF-TOKEN");
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
