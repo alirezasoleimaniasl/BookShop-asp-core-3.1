@@ -38,7 +38,8 @@ namespace BookShop.Areas.Admin.Pages.Publishers
         {
             await _UW.BaseRepository<Publisher>().CreateAsync(model);
             await _UW.Commit();
-            return new JsonResult(JsonConvert.SerializeObject(await _UW.BaseRepository<Publisher>().GetPaginateResultAsync(CurrentPage, PageSize)));
+            Count = _UW.BaseRepository<Publisher>().GetCount();
+            return new JsonResult(new { publishers = JsonConvert.SerializeObject(await _UW.BaseRepository<Publisher>().GetPaginateResultAsync(CurrentPage, PageSize)), totalPage = TotalPages, currentPage = CurrentPage });
         }
         public async Task<IActionResult> OnPostDeleteAsync(int? id)
         {
