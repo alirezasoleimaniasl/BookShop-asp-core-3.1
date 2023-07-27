@@ -96,13 +96,6 @@ namespace BookShop.Models.Repository
                          .AsEnumerable() // -- AsEnumerable() needs to be added before grouping, because you need items before grouping.
                          .GroupBy(b => b.BookID)
                          .Select(g => new { BookID = g.Key, BookGroups = g});
-            //group u by u.;
-
-            //.Where(a=>a.Author.Contains(Author) 
-            //&& a.Translator.Contains(Translator) 
-            //&& a.Category.Contains(Category))
-            //.ToList();
-            //var groupBooks = Books.GroupBy(b => b.BookID).Select(g => new{ BookID = g.Key, BookGroups = g.ToList() });
 
             foreach (var item in Books)
             {
